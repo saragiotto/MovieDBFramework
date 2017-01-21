@@ -11,19 +11,19 @@ import SwiftyJSON
 
 class Movie {
     
-    private var poster_path = ""
+    var poster_path = ""
     
-    private var overview = ""
+    var overview = ""
     
-    private var title = ""
+    var title = ""
     
-    private var original_title = ""
+    var original_title = ""
     
-    private var backdrop_path = ""
+    var backdrop_path = ""
     
-    private var release_date = ""
+    var release_date = ""
     
-    private var id = 0
+    var id = 0
     
     init() {
         
