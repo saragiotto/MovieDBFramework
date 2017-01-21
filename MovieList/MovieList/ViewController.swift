@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     var image_base_url = ""
     var secure_image_base_url = ""
     
+    @IBOutlet weak var posterImgView: UIImageView!
     var backdrop_sizes = [String]()
     var poster_sizes = [String]()
     

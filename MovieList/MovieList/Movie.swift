@@ -25,8 +25,10 @@ class Movie {
     
     var id = 0
     
+    var posterImage: UIImage?
+    
     init() {
-        
+        posterImage = nil
     }
     
     init(json: JSON) {
@@ -43,6 +45,8 @@ class Movie {
         self.release_date = json["release_date"].string!
         
         self.id = json["id"].int!
+        
+        posterImage = nil
         
     }
     

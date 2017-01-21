@@ -10,11 +10,18 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
+
 private let reuseIdentifier = "MovieListViewCell"
 
-class MovieListViewController: UICollectionViewController {
+class MovieListViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var movieList = [Movie]()
+    
+    var image_base_url = ""
+    var secure_image_base_url = ""
+    var backdrop_sizes = [String]()
+    var poster_sizes = [String]()
+    var genres = [Int: String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,23 +29,53 @@ class MovieListViewController: UICollectionViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
         // Do any additional setup after loading the view.
         
-        Alamofire.request("https://api.themoviedb.org/3/movie/upcoming?api_key=1f54bd990f1cdfb230adb312546d765d&language=en-US").responseJSON { response in
+        Alamofire.request("https://api.themoviedb.org/3/configuration?api_key=1f54bd990f1cdfb230adb312546d765d").responseJSON { response in
             debugPrint(response)
             
             if let value = response.result.value {
                 let json = JSON(value)
                 
-                self.movieList = json["results"].arrayValue.map({ Movie(json: $0) })
+                self.image_base_url = json["images"]["base_url"].string!
+                self.secure_image_base_url = json["images"]["secure_base_url"].string!
                 
+                self.backdrop_sizes = json["images"]["backdrop_sizes"].arrayValue.map({$0.stringValue})
+                self.poster_sizes = json["images"]["poster_sizes"].arrayValue.map({$0.stringValue})
+                
+                Alamofire.request("https://api.themoviedb.org/3/movie/upcoming?api_key=1f54bd990f1cdfb230adb312546d765d&language=en-US").responseJSON { response in
+                    debugPrint(response)
+                    
+                    if let value = response.result.value {
+                        let json = JSON(value)
+                        
+                        self.movieList = json["results"].arrayValue.map({ Movie(json: $0) })
+                        
+                    }
+                    
+                    self.collectionView!.reloadData()
+                }
             }
-            
-            self.collectionView!.reloadData()
         }
+        
+        Alamofire.request("https://api.themoviedb.org/3/genre/movie/list?api_key=1f54bd990f1cdfb230adb312546d765d&language=en-US").responseJSON { response in
+            debugPrint(response)
+            
+            if let value = response.result.value {
+                
+                let json = JSON(value)
+                
+                let genres = json["genres"]
+                
+                for (_, subJSON):(String, JSON) in genres {
+                    let genreId = subJSON["id"].int!
+                    let genreString = subJSON["name"].string!
+                    
+                    self.genres[genreId] = genreString
+                }
+            }
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,10 +111,9 @@ class MovieListViewController: UICollectionViewController {
         
         // Configure the cell
         
-        cell.backgroundColor = UIColor.lightGray
-//        cell.movieName.text = self.movieList[indexPath.row].title
-//        cell.movieReleaseDate.text = self.movieList[indexPath.row].release_date
-    
+        cell.movie = self.movieList[indexPath.row]
+        cell.secure_image_base_url = self.secure_image_base_url
+
         return cell
     }
 
@@ -111,5 +147,17 @@ class MovieListViewController: UICollectionViewController {
     
     }
     */
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let screenSize = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        let screenHeight = screenSize.height
+        
+        let itemWidth = screenWidth/2 - 10
+        let itemHeight = (itemWidth/4) * 5
+        
+        return CGSize(width: screenWidth/2 - 10, height: itemHeight)
+    }
 
 }
