@@ -126,7 +126,7 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         let screenWidth = screenSize.width
         
         let itemWidth = screenWidth/2 - 4
-        let itemHeight = (itemWidth/3) * 5
+        let itemHeight = (itemWidth/3) * 4.8
         
         return CGSize(width: itemWidth, height: itemHeight)
     }

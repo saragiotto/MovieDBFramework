@@ -34,6 +34,7 @@ class MovieListStart {
     private(set) var backdrop_sizes: [String]?
     private(set) var poster_sizes: [String]?
     private(set) var genres: [Int: String]?
+    private(set) var totalPages: Int?
     
     init() {
         
@@ -57,9 +58,17 @@ class MovieListStart {
     }
     
     public func loadNextPage(completition: @escaping () -> ()) {
-        self.pageCount += 1
-        self.page = "&page=\(self.pageCount)"
-        self.loadMovieList() {
+        if let totalPages = self.totalPages {
+            if self.pageCount < totalPages {
+                self.pageCount += 1
+                self.page = "&page=\(self.pageCount)"
+                self.loadMovieList() {
+                    completition()
+                }
+            } else {
+                completition()
+            }
+        } else {
             completition()
         }
     }
@@ -114,6 +123,8 @@ class MovieListStart {
             
             if let value = response.result.value {
                 let json = JSON(value)
+                
+                self.totalPages = json["total_pages"].int
                 
                 self.movieList += json["results"].arrayValue.map({ Movie(json: $0) })
                 

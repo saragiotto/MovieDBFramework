@@ -34,7 +34,7 @@ class MovieListViewCell: UICollectionViewCell {
         if let title = cellMovie.title {
             self.movieName.text = title
         } else {
-            if let origTitle = cellMovie.original_title {
+            if let origTitle = cellMovie.originalTitle {
                 self.movieName.text = origTitle
             }
         }
@@ -45,7 +45,7 @@ class MovieListViewCell: UICollectionViewCell {
             self.movieGenre.text = ""
         }
         
-        if let releaseDate = cellMovie.release_date {
+        if let releaseDate = cellMovie.releaseDate {
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .medium
@@ -70,7 +70,7 @@ class MovieListViewCell: UICollectionViewCell {
                 
                 let movieId = cellMovie.id 
                 
-                if let url = NSURL(string:self.movieApp!.secure_image_base_url! + "w300" + cellMovie.poster_path) {
+                if let url = NSURL(string:self.movieApp!.secure_image_base_url! + "w300" + cellMovie.posterPath!) {
                     
                     if let imgData = NSData(contentsOf: url as URL) {
                         

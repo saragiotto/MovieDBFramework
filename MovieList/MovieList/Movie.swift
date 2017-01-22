@@ -11,47 +11,46 @@ import SwiftyJSON
 
 class Movie {
     
-    var poster_path = ""
+    private(set) var id = 0
     
-    var overview = ""
+    private(set) var posterPath: String?
+    private(set) var overview: String?
+    private(set) var title: String?
+    private(set) var originalTitle: String?
+    private(set) var backdropPath: String?
+    private(set) var releaseDate: String?
+    private(set) var originalLanguage: String?
+    private(set) var voteCount: Int?
+    private(set) var voteAverage: Int?
+    private(set) var popularity: Double?
+    private(set) var video: Bool?
     
-    var title: String?
+    private(set) var genres_ids = [Int]()
     
-    var original_title: String?
-    
-    var backdrop_path: String?
-    
-    var release_date: String?
-    
-    var id = 0
-    
-    var posterImage: UIImage?
-    
-    var genres_ids = [Int]()
+    internal var posterImage: UIImage?
+    internal var backdropImage: UIImage?
     
     init() {
         posterImage = nil
     }
     
     init(json: JSON) {
-        self.poster_path = json["poster_path"].string!
-        
-        self.overview = json["overview"].string!
-        
+        self.posterPath = json["poster_path"].string
+        self.overview = json["overview"].string
         self.title = json["title"].string
-        
-        self.original_title = json["original_title"].string
-        
-        self.backdrop_path = json["backdrop_path"].string
-        
-        self.release_date = json["release_date"].string
-        
+        self.originalTitle = json["original_title"].string
+        self.backdropPath = json["backdrop_path"].string
+        self.releaseDate = json["release_date"].string
         self.id = json["id"].int!
-        
         self.genres_ids =  json["genre_ids"].arrayValue.map({$0.intValue})
         
-        posterImage = nil
+        self.originalLanguage = json["original_language"].string
+        self.voteCount = json["vote_count"].int
+        self.voteAverage = json["vote_average"].int
+        self.popularity = json["popularity"].double
+        self.video = json["video"].bool
         
+        posterImage = nil
+        backdropPath = nil
     }
-    
 }
