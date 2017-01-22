@@ -43,7 +43,7 @@ class MovieDetailViewController: UIViewController {
             }
         }
         
-        self.navigationController!.title = movieTitle.text!
+        self.navigationItem.title = movieTitle.text!
         
         if let overview = movie.overview {
             overviewInfo.text = overview
@@ -119,22 +119,6 @@ class MovieDetailViewController: UIViewController {
                 }
             }
         }
-        
-        // draw thick lines on top of each view, layout propose only
-        
-        let overviewBorder = CALayer()
-        overviewBorder.backgroundColor = UIColor.lightGray.cgColor
-        overviewBorder.frame = CGRect.init(x: 0.0, y: 8.0, width: overviewView.bounds.size.width, height: 0.3)
-        overviewView.layer.addSublayer(overviewBorder)
-        overviewView.clipsToBounds = true
-        
-        let infoViewBorder = CALayer()
-        infoViewBorder.backgroundColor = UIColor.lightGray.cgColor
-        infoViewBorder.frame = CGRect.init(x: 0.0, y: 8.0, width: infoView.bounds.size.width, height: 0.3)
-        infoView.layer.addSublayer(infoViewBorder)
-        infoView.clipsToBounds = true
-        
-        
     }
 
     override func didReceiveMemoryWarning() {

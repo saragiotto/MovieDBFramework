@@ -32,6 +32,12 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
 
         // Do any additional setup after loading the view.
         
+        let rightSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.search, target: nil, action: nil)
+        
+        rightSearchBarButtonItem.tintColor = UIColor.init(red: 231.0, green: 189.0, blue: 103.0, alpha: 1.0)
+        
+        self.navigationItem.setRightBarButtonItems([rightSearchBarButtonItem], animated: true)
+        
     
         self.movieApp.loadApp() {
             self.collectionView?.reloadData()
