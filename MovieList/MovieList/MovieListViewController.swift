@@ -46,7 +46,7 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         // Dispose of any resources that can be recreated.
     }
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -54,7 +54,6 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
     }
-    */
 
     // MARK: UICollectionViewDataSource
 
@@ -125,19 +124,19 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
         
-        let itemWidth = screenWidth/2 - 4
-        let itemHeight = (itemWidth/3) * 4.8
+        let itemWidth = screenWidth/2 - 2
+        let itemHeight = (itemWidth/3) * 5
         
         return CGSize(width: itemWidth, height: itemHeight)
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 8.0
+        return 4.0
     }
     
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 8.0
+        return 4.0
     }
 
 }

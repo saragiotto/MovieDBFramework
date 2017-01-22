@@ -62,33 +62,40 @@ class MovieListViewCell: UICollectionViewCell {
         }
         
         if let posterImg = cellMovie.posterImage {
-            
             self.moviePoster.image = posterImg
             self.setNeedsDisplay()
         } else {
-            DispatchQueue.global(qos: .userInitiated).async {
+            
+            if let posterPath = cellMovie.posterPath {
+                self.moviePoster.image = UIImage(named: "LaunchPoster.png")!
                 
-                let movieId = cellMovie.id 
-                
-                if let url = NSURL(string:self.movieApp!.secure_image_base_url! + "w300" + cellMovie.posterPath!) {
+                DispatchQueue.global(qos: .userInitiated).async {
                     
-                    if let imgData = NSData(contentsOf: url as URL) {
+                    let movieId = cellMovie.id 
+                    
+                    if let url = NSURL(string:"\(self.movieApp!.secure_image_base_url!)\(self.movieApp!.preferedPosterSize!)\(posterPath)") {
                         
-                        if let img = UIImage(data: imgData as Data) {
+                        if let imgData = NSData(contentsOf: url as URL) {
                             
-                            DispatchQueue.main.async {
+                            if let img = UIImage(data: imgData as Data) {
                                 
-                                if movieId == cellMovie.id {
+                                DispatchQueue.main.async {
                                     
-                                    self.movieApp!.movieList[self.movieIndex!].posterImage = img
-                                    self.moviePoster.image = img
-                                    self.setNeedsDisplay()
+                                    if movieId == cellMovie.id {
+                                        
+                                        self.movieApp!.movieList[self.movieIndex!].posterImage = img
+                                        self.moviePoster.image = img
+                                        self.setNeedsDisplay()
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            } else {
+                self.moviePoster.image = UIImage(named: "NoPoster.png")!
             }
+            
         }
     }
 }

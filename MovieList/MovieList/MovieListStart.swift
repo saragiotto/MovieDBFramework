@@ -31,8 +31,12 @@ class MovieListStart {
     private(set) var movieList: [Movie]
     private(set) var image_base_url: String?
     private(set) var secure_image_base_url: String?
+    
     private(set) var backdrop_sizes: [String]?
+    private(set) var preferedBackdropSize: String?
     private(set) var poster_sizes: [String]?
+    private(set) var preferedPosterSize: String?
+    
     private(set) var genres: [Int: String]?
     private(set) var totalPages: Int?
     
@@ -86,6 +90,23 @@ class MovieListStart {
                 
                 self.backdrop_sizes = json["images"]["backdrop_sizes"].arrayValue.map({$0.stringValue})
                 self.poster_sizes = json["images"]["poster_sizes"].arrayValue.map({$0.stringValue})
+                
+                switch UIScreen.main.scale {
+                case 1.0:
+                    self.preferedPosterSize = self.poster_sizes![self.poster_sizes!.count - 4]
+                    self.preferedBackdropSize = self.backdrop_sizes![self.backdrop_sizes!.count - 4]
+                case 2.0:
+                    self.preferedPosterSize = self.poster_sizes![self.poster_sizes!.count - 3]
+                    self.preferedBackdropSize = self.backdrop_sizes![self.backdrop_sizes!.count - 3]
+                case 3.0:
+                    self.preferedPosterSize = self.poster_sizes![self.poster_sizes!.count - 2]
+                    self.preferedBackdropSize = self.backdrop_sizes![self.backdrop_sizes!.count - 2]
+                default:
+                    self.preferedPosterSize = self.poster_sizes!.first
+                    self.preferedBackdropSize = self.backdrop_sizes!.first
+                }
+                
+                print("Prefered sizes \(self.preferedPosterSize) \(self.preferedBackdropSize)")
                 
                 completition()
             }
