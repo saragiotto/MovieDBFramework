@@ -15,48 +15,80 @@ class MovieListViewCell: UICollectionViewCell {
     @IBOutlet weak var movieGenre: UILabel!
     @IBOutlet weak var movieReleaseDate: UILabel!
     
-    var secure_image_base_url = ""
+//    var secure_image_base_url = ""
+//    
+//    var genres = [Int: String]()
     
-    var movie: Movie? {
+    var movieIndex: Int? {
         didSet {
             updateCell()
         }
     }
     
+    var movieApp: MovieListStart?
+    
     private func updateCell() {
         
-        self.movieName.text = self.movie!.title
-        self.movieReleaseDate.text = self.movie!.release_date
+        let cellMovie = self.movieApp!.movieList[movieIndex!]
         
-        //
-        //        if let posterImage = self.movieList[indexPath.row].posterImage {
-        //            cell.moviePoster = UIImageView(image: posterImage)
-        //            cell.setNeedsDisplay()
-        //        } else {
+        if let title = cellMovie.title {
+            self.movieName.text = title
+        } else {
+            if let origTitle = cellMovie.original_title {
+                self.movieName.text = origTitle
+            }
+        }
         
-        DispatchQueue.global(qos: .userInitiated).async {
+        if cellMovie.genres_ids.count > 0 {
+            self.movieGenre.text = self.movieApp!.genres![cellMovie.genres_ids[0]]
+        } else {
+            self.movieGenre.text = ""
+        }
+        
+        if let releaseDate = cellMovie.release_date {
             
-            let movieId = self.movie!.id
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.dateFormat = "yyyy-MM-dd"
             
-            if let url = NSURL(string:self.secure_image_base_url + "w300" + self.movie!.poster_path) {
+            let releaseDateFormatted = dateFormatter.date(from: releaseDate)
+            
+            let newDateFormat = DateFormatter()
+            newDateFormat.dateStyle = .medium
+            
+            self.movieReleaseDate.text = newDateFormat.string(from: releaseDateFormatted!)
+        } else {
+            self.movieReleaseDate.text = ""
+        }
+        
+        if let posterImg = cellMovie.posterImage {
+            
+            self.moviePoster.image = posterImg
+            self.setNeedsDisplay()
+        } else {
+            DispatchQueue.global(qos: .userInitiated).async {
                 
-                if let imgData = NSData(contentsOf: url as URL) {
+                let movieId = cellMovie.id 
+                
+                if let url = NSURL(string:self.movieApp!.secure_image_base_url! + "w300" + cellMovie.poster_path) {
                     
-                    if let img = UIImage(data: imgData as Data) {
+                    if let imgData = NSData(contentsOf: url as URL) {
                         
-                        DispatchQueue.main.async {
+                        if let img = UIImage(data: imgData as Data) {
                             
-                            if movieId == self.movie!.id {
+                            DispatchQueue.main.async {
                                 
-                                self.movie!.posterImage = img
-                                self.moviePoster.image = img
-                                
+                                if movieId == cellMovie.id {
+                                    
+                                    self.movieApp!.movieList[self.movieIndex!].posterImage = img
+                                    self.moviePoster.image = img
+                                    self.setNeedsDisplay()
+                                }
                             }
                         }
                     }
                 }
             }
         }
-
     }
 }

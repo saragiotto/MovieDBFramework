@@ -10,18 +10,19 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-
 private let reuseIdentifier = "MovieListViewCell"
 
 class MovieListViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    var movieList = [Movie]()
+//    var image_base_url = ""
+//    var secure_image_base_url = ""
+//    var backdrop_sizes = [String]()
+//    var poster_sizes = [String]()
+//    var genres = [Int: String]()
     
-    var image_base_url = ""
-    var secure_image_base_url = ""
-    var backdrop_sizes = [String]()
-    var poster_sizes = [String]()
-    var genres = [Int: String]()
+    private var movieApp = MovieListStart()
+    
+//    var movieList = [Movie]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,49 +32,11 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
 
         // Do any additional setup after loading the view.
         
-        Alamofire.request("https://api.themoviedb.org/3/configuration?api_key=1f54bd990f1cdfb230adb312546d765d").responseJSON { response in
-            debugPrint(response)
-            
-            if let value = response.result.value {
-                let json = JSON(value)
-                
-                self.image_base_url = json["images"]["base_url"].string!
-                self.secure_image_base_url = json["images"]["secure_base_url"].string!
-                
-                self.backdrop_sizes = json["images"]["backdrop_sizes"].arrayValue.map({$0.stringValue})
-                self.poster_sizes = json["images"]["poster_sizes"].arrayValue.map({$0.stringValue})
-                
-                Alamofire.request("https://api.themoviedb.org/3/movie/upcoming?api_key=1f54bd990f1cdfb230adb312546d765d&language=en-US").responseJSON { response in
-                    debugPrint(response)
-                    
-                    if let value = response.result.value {
-                        let json = JSON(value)
-                        
-                        self.movieList = json["results"].arrayValue.map({ Movie(json: $0) })
-                        
-                    }
-                    
-                    self.collectionView!.reloadData()
-                }
-            }
-        }
+    
         
-        Alamofire.request("https://api.themoviedb.org/3/genre/movie/list?api_key=1f54bd990f1cdfb230adb312546d765d&language=en-US").responseJSON { response in
-            debugPrint(response)
-            
-            if let value = response.result.value {
-                
-                let json = JSON(value)
-                
-                let genres = json["genres"]
-                
-                for (_, subJSON):(String, JSON) in genres {
-                    let genreId = subJSON["id"].int!
-                    let genreString = subJSON["name"].string!
-                    
-                    self.genres[genreId] = genreString
-                }
-            }
+        self.movieApp.loadApp() {
+            print("last of us!!!")
+            self.collectionView?.reloadData()
         }
         
     }
@@ -103,7 +66,9 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return self.movieList.count
+        
+        return self.movieApp.movieList.count
+
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -111,8 +76,15 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         
         // Configure the cell
         
-        cell.movie = self.movieList[indexPath.row]
-        cell.secure_image_base_url = self.secure_image_base_url
+        cell.movieApp = self.movieApp
+        cell.movieIndex = indexPath.row
+        
+        if (indexPath.row == self.movieApp.movieList.count - 1) {
+            self.movieApp.loadNextPage {
+                print("carregou proxima pagina! \(self.movieApp.movieList.count)")
+                self.collectionView?.reloadData()
+            }
+        }
 
         return cell
     }
@@ -152,12 +124,20 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
-        let screenHeight = screenSize.height
         
-        let itemWidth = screenWidth/2 - 10
-        let itemHeight = (itemWidth/4) * 5
+        let itemWidth = screenWidth/2 - 4
+        let itemHeight = (itemWidth/3) * 5
         
-        return CGSize(width: screenWidth/2 - 10, height: itemHeight)
+        return CGSize(width: itemWidth, height: itemHeight)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 8.0
+    }
+    
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 8.0
     }
 
 }
