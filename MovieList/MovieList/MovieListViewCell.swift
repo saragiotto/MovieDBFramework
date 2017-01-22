@@ -25,6 +25,11 @@ class MovieListViewCell: UICollectionViewCell {
     
     private func updateCell() {
         
+        moviePoster?.image = nil
+        movieName?.text = nil
+        movieGenre?.text = nil
+        movieReleaseDate?.text = nil
+        
         let cellMovie = self.movieApp!.movieList[movieIndex!]
         
         if let title = cellMovie.title {
@@ -59,13 +64,14 @@ class MovieListViewCell: UICollectionViewCell {
             self.movieReleaseDate.text = "To be announced"
         }
         
+        self.moviePoster.image = UIImage(named: "LaunchPoster.png")!
+        
         if let posterImg = cellMovie.posterImage {
             self.moviePoster.image = posterImg
             self.setNeedsDisplay()
         } else {
             
             if let posterPath = cellMovie.posterPath {
-                self.moviePoster.image = UIImage(named: "LaunchPoster.png")!
                 
                 DispatchQueue.global(qos: .userInitiated).async {
                     
