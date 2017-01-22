@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "Movie.init(json : JSON) -&gt; Movie:Movie.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieListViewController.prepare(for : UIStoryboardSegue, sender : Any?) -&gt; ():MovieListViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieListViewCell.updateCell() -&gt; ():MovieListViewCell.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieDetailViewController.viewDidLoad() -&gt; ():MovieDetailViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieListViewController.(viewDidLoad() -&gt; ()).(closure #1):MovieListViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieListStart.(loadConfiguration(completition : () -&gt; ()) -&gt; ()).(closure #1):MovieListStart.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MovieListStart.(loadApp(completition : () -&gt; ()) -&gt; ()).(closure #1).(closure #1).(closure #1):MovieListStart.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.movieList">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

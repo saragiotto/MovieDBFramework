@@ -15,10 +15,6 @@ class MovieListViewCell: UICollectionViewCell {
     @IBOutlet weak var movieGenre: UILabel!
     @IBOutlet weak var movieReleaseDate: UILabel!
     
-//    var secure_image_base_url = ""
-//    
-//    var genres = [Int: String]()
-    
     var movieIndex: Int? {
         didSet {
             updateCell()
@@ -36,13 +32,15 @@ class MovieListViewCell: UICollectionViewCell {
         } else {
             if let origTitle = cellMovie.originalTitle {
                 self.movieName.text = origTitle
+            } else {
+                self.movieName.text = "Title not available"
             }
         }
         
-        if cellMovie.genres_ids.count > 0 {
-            self.movieGenre.text = self.movieApp!.genres![cellMovie.genres_ids[0]]
+        if cellMovie.genres_ids.isEmpty {
+            self.movieGenre.text = "-"
         } else {
-            self.movieGenre.text = ""
+            self.movieGenre.text = self.movieApp!.genres![cellMovie.genres_ids[0]]
         }
         
         if let releaseDate = cellMovie.releaseDate {
@@ -58,7 +56,7 @@ class MovieListViewCell: UICollectionViewCell {
             
             self.movieReleaseDate.text = newDateFormat.string(from: releaseDateFormatted!)
         } else {
-            self.movieReleaseDate.text = ""
+            self.movieReleaseDate.text = "To be announced"
         }
         
         if let posterImg = cellMovie.posterImage {
@@ -95,7 +93,6 @@ class MovieListViewCell: UICollectionViewCell {
             } else {
                 self.moviePoster.image = UIImage(named: "NoPoster.png")!
             }
-            
         }
     }
 }

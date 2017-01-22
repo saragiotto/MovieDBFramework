@@ -32,16 +32,21 @@ class Movie {
     
     init() {
         posterImage = nil
+        backdropImage = nil
     }
     
     init(json: JSON) {
+        
         self.posterPath = json["poster_path"].string
         self.overview = json["overview"].string
         self.title = json["title"].string
         self.originalTitle = json["original_title"].string
+        
         self.backdropPath = json["backdrop_path"].string
+        
         self.releaseDate = json["release_date"].string
         self.id = json["id"].int!
+        
         self.genres_ids =  json["genre_ids"].arrayValue.map({$0.intValue})
         
         self.originalLanguage = json["original_language"].string
@@ -51,6 +56,6 @@ class Movie {
         self.video = json["video"].bool
         
         posterImage = nil
-        backdropPath = nil
+        backdropImage = nil
     }
 }

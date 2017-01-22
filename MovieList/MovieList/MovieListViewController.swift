@@ -33,9 +33,7 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         // Do any additional setup after loading the view.
         
     
-        
         self.movieApp.loadApp() {
-            print("last of us!!!")
             self.collectionView?.reloadData()
         }
         
@@ -45,6 +43,10 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    private struct Storyboard {
+        static let movieDetailIdentifier = "movieDetail"
+    }
 
     
     // MARK: - Navigation
@@ -53,6 +55,16 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
+        
+        switch segue.identifier! {
+        case Storyboard.movieDetailIdentifier:
+            if let movieDetailVC = segue.destination as? MovieDetailViewController {
+                movieDetailVC.movieApp = self.movieApp
+                movieDetailVC.movieIndex = self.collectionView!.indexPathsForSelectedItems!.first!.row
+            }
+        default:
+            break
+        }
     }
 
     // MARK: UICollectionViewDataSource
