@@ -21,14 +21,17 @@ class Movie {
     private(set) var releaseDate: String?
     private(set) var originalLanguage: String?
     private(set) var voteCount: Int?
-    private(set) var voteAverage: Int?
+    private(set) var voteAverage: Double?
     private(set) var popularity: Double?
     private(set) var video: Bool?
+    
     
     private(set) var genres_ids = [Int]()
     
     internal var posterImage: UIImage?
     internal var backdropImage: UIImage?
+    internal var homepage: String?
+    internal var cast: [String]?
     
     init() {
         posterImage = nil
@@ -51,7 +54,7 @@ class Movie {
         
         self.originalLanguage = json["original_language"].string
         self.voteCount = json["vote_count"].int
-        self.voteAverage = json["vote_average"].int
+        self.voteAverage = json["vote_average"].double
         self.popularity = json["popularity"].double
         self.video = json["video"].bool
         

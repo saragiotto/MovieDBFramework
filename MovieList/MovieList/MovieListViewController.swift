@@ -38,7 +38,8 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         rightSearchBarButtonItem.tintColor = UIColor.flatYellowColorDark()
         
         self.navigationItem.setRightBarButtonItems([rightSearchBarButtonItem], animated: true)
-        
+
+        UIApplication.shared.statusBarStyle = .lightContent
     
         self.movieApp.loadApp() {
             self.collectionView?.reloadData()

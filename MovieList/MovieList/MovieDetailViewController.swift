@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ChameleonFramework
 
 class MovieDetailViewController: UIViewController {
 
@@ -16,6 +17,7 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var ratedLabel: UILabel!
     @IBOutlet weak var releaseDate: UILabel!
     @IBOutlet weak var genre: UILabel!
+    @IBOutlet weak var cast: UILabel!
     
     @IBOutlet weak var overviewView: UIView!
     @IBOutlet weak var infoView: UIView!
@@ -26,12 +28,16 @@ class MovieDetailViewController: UIViewController {
     var movieIndex: Int?
     var movieApp: MovieListStart?
     
+    private var movie = Movie()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
-        let movie = self.movieApp!.movieList[movieIndex!]
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+        movie = self.movieApp!.movieList[movieIndex!]
         
         if let title = movie.title {
             movieTitle.text = title
@@ -79,7 +85,8 @@ class MovieDetailViewController: UIViewController {
             genre.text = "-"
         }
         
-        if let popMovie = movie.popularity {
+        if let popMovie = movie.voteAverage {
+            populatiry.textColor = UIColor.flatYellowColorDark()
             populatiry.text = String(format:"%.1f", popMovie)
         } else {
             populatiry.text = ""
@@ -92,7 +99,7 @@ class MovieDetailViewController: UIViewController {
                 
                 DispatchQueue.global(qos: .userInitiated).async {
                     
-                    let movieId = movie.id
+                    let movieId = self.movie.id
                     
                     if let url = NSURL(string:"\(self.movieApp!.secure_image_base_url!)\(self.movieApp!.preferedBackdropSize!)\(backdropPath)") {
                         
@@ -104,7 +111,7 @@ class MovieDetailViewController: UIViewController {
                                 
                                 DispatchQueue.main.async {
                                     
-                                    if movieId == movie.id {
+                                    if movieId == self.movie.id {
                                         
                                         print("backdrop should appear now!")
                                         
@@ -119,6 +126,37 @@ class MovieDetailViewController: UIViewController {
                 }
             }
         }
+        
+        self.website.text = " "
+        
+        self.movieApp?.loadMovieDetail(movie: movie) {
+            if let homepage = self.movie.homepage {
+                
+                self.website.textColor = UIColor.flatYellowColorDark()
+                self.website.text = homepage
+                self.website.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(MovieDetailViewController.openWebsite)))
+                
+            } else {
+                self.website.text = "Not available"
+            }
+        }
+        
+        self.cast.text = " "
+        
+        self.movieApp?.loadMovieCast(movie: movie) {
+            if let movieCast = self.movie.cast {
+                self.cast.text = movieCast.joined(separator: ", ")
+            }
+        }
+    }
+    
+    
+    public func openWebsite() {
+        if let website = self.movie.homepage {
+            UIApplication.shared.open(URL.init(string: website)!, options: [:], completionHandler: nil)
+        }
+        
+        return
     }
 
     override func didReceiveMemoryWarning() {

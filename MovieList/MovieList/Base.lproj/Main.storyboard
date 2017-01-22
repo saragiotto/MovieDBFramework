@@ -187,7 +187,7 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="yZB-JF-hPj">
                                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="64"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rated" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SYp-Wg-cEV">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cast" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SYp-Wg-cEV">
                                                                         <rect key="frame" x="0.0" y="0.0" width="100" height="16"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                                                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -224,7 +224,7 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="QDL-kn-XgC">
                                                                 <rect key="frame" x="112" y="0.0" width="231" height="64"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GFQ-d3-HCh">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GFQ-d3-HCh">
                                                                         <rect key="frame" x="0.0" y="0.0" width="231" height="16"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
                                                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -242,7 +242,7 @@
                                                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fm9-4o-1RV">
+                                                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fm9-4o-1RV">
                                                                         <rect key="frame" x="0.0" y="48" width="231" height="16"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
                                                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -280,6 +280,7 @@
                     </view>
                     <connections>
                         <outlet property="backdropMovie" destination="GwC-Nf-uM5" id="cVO-W2-0Uq"/>
+                        <outlet property="cast" destination="GFQ-d3-HCh" id="Sw6-Mk-DUQ"/>
                         <outlet property="genre" destination="8eV-GB-92O" id="Qgf-lV-rRv"/>
                         <outlet property="genreLabel" destination="yqj-CZ-f0X" id="yu5-Vp-cnE"/>
                         <outlet property="infoView" destination="fOV-5a-sql" id="aOG-ti-HfN"/>
@@ -287,7 +288,6 @@
                         <outlet property="overviewInfo" destination="cI3-Zp-1oE" id="N4c-4u-O9N"/>
                         <outlet property="overviewView" destination="8E2-Ic-46v" id="IuE-UL-9sw"/>
                         <outlet property="populatiry" destination="LhH-pX-Ili" id="13Y-Ws-YQo"/>
-                        <outlet property="ratedLabel" destination="GFQ-d3-HCh" id="PTd-ko-Kuj"/>
                         <outlet property="releaseDate" destination="oLW-lh-iWJ" id="Lfz-zH-IlI"/>
                         <outlet property="website" destination="Fm9-4o-1RV" id="aKt-8K-9EX"/>
                     </connections>
@@ -301,7 +301,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="s8U-Iy-P5j" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" alpha="0.59999999999999998" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="Vdn-Vm-9Ah">
+                    <navigationBar key="navigationBar" alpha="0.59999999999999998" contentMode="scaleToFill" barStyle="black" id="Vdn-Vm-9Ah">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

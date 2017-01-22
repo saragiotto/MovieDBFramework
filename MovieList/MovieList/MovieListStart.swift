@@ -20,6 +20,8 @@ class MovieListStart {
         case configuration = "configuration"
         case genresList = "genre/movie/list"
         case upComingMovies = "movie/upcoming"
+        case movieDetail = "movie/"
+        case movieCredits = "movie/$/credits"
     }
     
     private let apiKey: String
@@ -148,6 +150,50 @@ class MovieListStart {
                 self.totalPages = json["total_pages"].int
                 
                 self.movieList += json["results"].arrayValue.map({ Movie(json: $0) })
+                
+                completition()
+            }
+        }
+    }
+    
+    public func loadMovieDetail(movie: Movie, completition: @escaping () -> Void) {
+        Alamofire.request("\(baseUrl)\(EndPoint.movieDetail.rawValue)\(movie.id)\(apiKey)\(language)").responseJSON { response in
+            debugPrint(response)
+        
+            if let value = response.result.value {
+                let json = JSON(value)
+                
+                let homepage = json["homepage"].string
+                
+                if !homepage!.isEmpty {
+                    movie.homepage = homepage
+                }
+                
+                completition()
+            }
+        }
+    }
+    
+    public func loadMovieCast(movie: Movie, completition: @escaping () -> Void) {
+        
+        var movieEndPointWithId = "\(EndPoint.movieCredits.rawValue)"
+        movieEndPointWithId.replaceSubrange(movieEndPointWithId.range(of: "$")!, with: "\(movie.id)")
+        
+        Alamofire.request("\(baseUrl)\(movieEndPointWithId)\(apiKey)").responseJSON { response in
+            debugPrint(response)
+            
+            if let value = response.result.value {
+                let json = JSON(value)
+                
+                let castInfo =  json["cast"].arrayValue.map({$0["name"].stringValue})
+                
+                if !castInfo.isEmpty {
+                    if castInfo.count < 6 {
+                        movie.cast = castInfo
+                    } else {
+                        movie.cast = Array(castInfo[0..<5])
+                    }
+                }
                 
                 completition()
             }
