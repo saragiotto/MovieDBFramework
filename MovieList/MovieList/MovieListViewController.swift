@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import ChameleonFramework
 
 private let reuseIdentifier = "MovieListViewCell"
 
@@ -34,7 +35,7 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         
         let rightSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.search, target: nil, action: nil)
         
-        rightSearchBarButtonItem.tintColor = UIColor.init(red: 231.0, green: 189.0, blue: 103.0, alpha: 1.0)
+        rightSearchBarButtonItem.tintColor = UIColor.flatYellowColorDark()
         
         self.navigationItem.setRightBarButtonItems([rightSearchBarButtonItem], animated: true)
         

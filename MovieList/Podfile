@@ -9,4 +9,5 @@ target 'MovieList' do
 
   pod 'Alamofire', '~> 4.3'
   pod 'SwiftyJSON'
+  pod 'ChameleonFramework'
 end

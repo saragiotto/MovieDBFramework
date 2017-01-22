@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ChameleonFramework.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MovieList.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,12 +32,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CFB4499F20E04F98A22FBB831188E1BF</key>
+		<key>8A267660E1AD4832DE75665F2F87AEA3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EB1CE7F1B2421D860F6550A95F1904DA</key>
+		<key>C3A71D078531EC9B3A74576D514287C6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CE20279A278910F0F9FE6C7B9387CEC9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
