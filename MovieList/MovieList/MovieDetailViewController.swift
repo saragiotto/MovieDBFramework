@@ -85,7 +85,7 @@ class MovieDetailViewController: UIViewController {
             genre.text = "-"
         }
         
-        if let popMovie = movie.voteAverage {
+        if let popMovie = movie.voteAverage, popMovie > 0.0 {
             populatiry.textColor = UIColor.flatYellowColorDark()
             populatiry.text = String(format:"%.1f", popMovie)
         } else {
@@ -128,6 +128,7 @@ class MovieDetailViewController: UIViewController {
         }
         
         self.website.text = " "
+        self.cast.text = " "
         
         self.movieApp?.loadMovieDetail(movie: movie) {
             if let homepage = self.movie.homepage {
@@ -141,11 +142,7 @@ class MovieDetailViewController: UIViewController {
             } else {
                 self.website.text = "Not available"
             }
-        }
-        
-        self.cast.text = " "
-        
-        self.movieApp?.loadMovieCast(movie: movie) {
+            
             if let movieCast = self.movie.cast {
                 self.cast.text = movieCast.joined(separator: ", ")
             }

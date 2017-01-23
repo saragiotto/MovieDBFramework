@@ -24,6 +24,13 @@ class MovieListStart {
         case movieCredits = "movie/$/credits"
     }
     
+    private let appendToResponse = "&append_to_response="
+    
+    //
+    // videos and images also supports appendo_to_response
+    //
+    private let appendParms = ["credits"]
+    
     private let apiKey: String
     private let language: String
     
@@ -157,7 +164,12 @@ class MovieListStart {
     }
     
     public func loadMovieDetail(movie: Movie, completition: @escaping () -> Void) {
-        Alamofire.request("\(baseUrl)\(EndPoint.movieDetail.rawValue)\(movie.id)\(apiKey)\(language)").responseJSON { response in
+        
+        var endPointUrl = "\(baseUrl)\(EndPoint.movieDetail.rawValue)\(movie.id)\(apiKey)\(language)"
+        
+        endPointUrl.append("\(appendToResponse)\(appendParms.joined(separator: ","))")
+        
+        Alamofire.request(endPointUrl).responseJSON { response in
             debugPrint(response)
         
             if let value = response.result.value {
@@ -169,32 +181,18 @@ class MovieListStart {
                     movie.homepage = homepage
                 }
                 
-                completition()
-            }
-        }
-    }
-    
-    public func loadMovieCast(movie: Movie, completition: @escaping () -> Void) {
-        
-        var movieEndPointWithId = "\(EndPoint.movieCredits.rawValue)"
-        movieEndPointWithId.replaceSubrange(movieEndPointWithId.range(of: "$")!, with: "\(movie.id)")
-        
-        Alamofire.request("\(baseUrl)\(movieEndPointWithId)\(apiKey)").responseJSON { response in
-            debugPrint(response)
-            
-            if let value = response.result.value {
-                let json = JSON(value)
-                
-                let castInfo =  json["cast"].arrayValue.map({$0["name"].stringValue})
-                
-                if !castInfo.isEmpty {
-                    if castInfo.count < 6 {
-                        movie.cast = castInfo
-                    } else {
-                        movie.cast = Array(castInfo[0..<5])
+                if let credits = json["credits"].dictionary {
+                    let castInfo =  credits["cast"]?.arrayValue.map({$0["name"].stringValue})
+                    
+                    if !castInfo!.isEmpty {
+                        if castInfo!.count < 6 {
+                            movie.cast = castInfo
+                        } else {
+                            movie.cast = Array(castInfo![0..<5])
+                        }
                     }
                 }
-                
+            
                 completition()
             }
         }
