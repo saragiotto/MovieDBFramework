@@ -100,26 +100,60 @@ class MovieListStart {
                 self.backdrop_sizes = json["images"]["backdrop_sizes"].arrayValue.map({$0.stringValue})
                 self.poster_sizes = json["images"]["poster_sizes"].arrayValue.map({$0.stringValue})
                 
-                switch UIScreen.main.scale {
-                case 1.0:
-                    self.preferedPosterSize = self.poster_sizes![self.poster_sizes!.count - 4]
-                    self.preferedBackdropSize = self.backdrop_sizes![self.backdrop_sizes!.count - 4]
-                case 2.0:
-                    self.preferedPosterSize = self.poster_sizes![self.poster_sizes!.count - 3]
-                    self.preferedBackdropSize = self.backdrop_sizes![self.backdrop_sizes!.count - 3]
-                case 3.0:
-                    self.preferedPosterSize = self.poster_sizes![self.poster_sizes!.count - 2]
-                    self.preferedBackdropSize = self.backdrop_sizes![self.backdrop_sizes!.count - 2]
-                default:
-                    self.preferedPosterSize = self.poster_sizes!.first
-                    self.preferedBackdropSize = self.backdrop_sizes!.first
-                }
-                
-                print("Prefered sizes \(self.preferedPosterSize) \(self.preferedBackdropSize)")
+                self.definePreferedSizes()
                 
                 completition()
             }
         }
+    }
+    
+    private func definePreferedSizes() {
+        let deviceWidth = Double(UIScreen.main.bounds.size.width)
+        var maxSize = ""
+        
+        for size in self.poster_sizes! {
+            
+            if let doubleSize = Double(self.sizeString(size)) {
+                maxSize = size
+                if doubleSize > deviceWidth {
+                    self.preferedPosterSize = size
+                    break
+                }
+            }
+        }
+        
+        if (self.preferedPosterSize?.isEmpty)! {
+            self.preferedPosterSize = maxSize
+        }
+        
+        maxSize = ""
+        
+        for size in self.backdrop_sizes! {
+            
+            if let doubleSize = Double(self.sizeString(size)) {
+                maxSize = size
+                if doubleSize > deviceWidth {
+                    self.preferedBackdropSize = size
+                    break
+                }
+            }
+        }
+        
+        if (self.preferedBackdropSize?.isEmpty)! {
+            self.preferedBackdropSize = maxSize
+        }
+
+        print("Prefered sizes \(self.preferedPosterSize) \(self.preferedBackdropSize) \(deviceWidth)")
+    }
+    
+    private func sizeString(_ widthSize: String) -> String {
+        
+        let numericSet = "0123456789"
+        let filteredCharacters = widthSize.characters.filter {
+            return numericSet.contains(String($0))
+        }
+        
+        return String(filteredCharacters)
     }
     
     private func loadGenres(completition: @escaping () -> Void) {
