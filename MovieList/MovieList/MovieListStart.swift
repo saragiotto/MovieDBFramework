@@ -181,6 +181,8 @@ class MovieListStart {
                     movie.homepage = homepage
                 }
                 
+                movie.runTime = json["runtime"].int
+                
                 if let credits = json["credits"].dictionary {
                     let castInfo =  credits["cast"]?.arrayValue.map({$0["name"].stringValue})
                     

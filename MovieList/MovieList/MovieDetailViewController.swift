@@ -19,6 +19,7 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var genre: UILabel!
     @IBOutlet weak var cast: UILabel!
     
+    @IBOutlet weak var runTime: UILabel!
     @IBOutlet weak var overviewView: UIView!
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var genreLabel: UILabel!
@@ -38,6 +39,34 @@ class MovieDetailViewController: UIViewController {
         UIApplication.shared.statusBarStyle = .lightContent
         
         movie = self.movieApp!.movieList[movieIndex!]
+        
+        website.text = " "
+        cast.text = " "
+        runTime.text = ""
+        
+        self.movieApp?.loadMovieDetail(movie: movie) {
+            if let homepage = self.movie.homepage {
+                
+                let url = URL(string: homepage)
+                
+                self.website.textColor = UIColor.flatYellowColorDark()
+                self.website.text = url!.host!
+                self.website.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(MovieDetailViewController.openWebsite)))
+                
+            } else {
+                self.website.text = "Not available"
+            }
+            
+            if let movieCast = self.movie.cast {
+                self.cast.text = movieCast.joined(separator: ", ")
+            }
+            
+            if let movieRunTime = self.movie.finalRunTime {
+                self.runTime.text = "\(movieRunTime)"
+            } else {
+                self.runTime.text = ""
+            }
+        }
         
         if let title = movie.title {
             movieTitle.text = title
@@ -124,27 +153,6 @@ class MovieDetailViewController: UIViewController {
                         }
                     }
                 }
-            }
-        }
-        
-        self.website.text = " "
-        self.cast.text = " "
-        
-        self.movieApp?.loadMovieDetail(movie: movie) {
-            if let homepage = self.movie.homepage {
-                
-                let url = URL(string: homepage)
-                
-                self.website.textColor = UIColor.flatYellowColorDark()
-                self.website.text = url!.host!
-                self.website.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(MovieDetailViewController.openWebsite)))
-                
-            } else {
-                self.website.text = "Not available"
-            }
-            
-            if let movieCast = self.movie.cast {
-                self.cast.text = movieCast.joined(separator: ", ")
             }
         }
     }

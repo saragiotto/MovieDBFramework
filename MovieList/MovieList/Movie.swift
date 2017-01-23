@@ -24,7 +24,7 @@ class Movie {
     private(set) var voteAverage: Double?
     private(set) var popularity: Double?
     private(set) var video: Bool?
-    
+    private(set) var finalRunTime: String?
     
     private(set) var genres_ids = [Int]()
     
@@ -32,6 +32,19 @@ class Movie {
     internal var backdropImage: UIImage?
     internal var homepage: String?
     internal var cast: [String]?
+    internal var runTime: Int? {
+        didSet {
+            if let rt  = runTime, rt > 0 {
+                if rt < 60 {
+                    finalRunTime = "\(rt)m"
+                } else {
+                    let hours = rt/60
+                    let minutes = rt%60
+                    finalRunTime = "\(hours)h \(minutes)m"
+                }
+            }
+        }
+    }
     
     init() {
         posterImage = nil
