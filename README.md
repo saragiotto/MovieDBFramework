@@ -4,7 +4,7 @@
 
 What about a movie today? This app brings the up coming movies to you.
 
-## Dependencies used
+## Third-party libraries 
 
 #### Alamofire
 
