@@ -132,8 +132,10 @@ class MovieDetailViewController: UIViewController {
         self.movieApp?.loadMovieDetail(movie: movie) {
             if let homepage = self.movie.homepage {
                 
+                let url = URL(string: homepage)
+                
                 self.website.textColor = UIColor.flatYellowColorDark()
-                self.website.text = homepage
+                self.website.text = url!.host!
                 self.website.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(MovieDetailViewController.openWebsite)))
                 
             } else {
