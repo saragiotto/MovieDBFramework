@@ -23,6 +23,8 @@ class MovieListViewCell: UICollectionViewCell {
     
     var movieApp: MovieListStart?
     
+    private var cellMovie = Movie()
+    
     private func updateCell() {
         
         moviePoster?.image = nil
@@ -30,7 +32,7 @@ class MovieListViewCell: UICollectionViewCell {
         movieGenre?.text = nil
         movieReleaseDate?.text = nil
         
-        let cellMovie = self.movieApp!.movieList[movieIndex!]
+        cellMovie = self.movieApp!.movieList[movieIndex!]
         
         if let title = cellMovie.title {
             self.movieName.text = title
@@ -75,7 +77,7 @@ class MovieListViewCell: UICollectionViewCell {
                 
                 DispatchQueue.global(qos: .userInitiated).async {
                     
-                    let movieId = cellMovie.id 
+                    let movieId = self.cellMovie.id
                     
                     if let url = NSURL(string:"\(self.movieApp!.secure_image_base_url!)\(self.movieApp!.preferedPosterSize!)\(posterPath)") {
                         
@@ -85,7 +87,7 @@ class MovieListViewCell: UICollectionViewCell {
                                 
                                 DispatchQueue.main.async {
                                     
-                                    if movieId == cellMovie.id {
+                                    if movieId == self.cellMovie.id {
                                         
                                         self.movieApp!.movieList[self.movieIndex!].posterImage = img
                                         self.moviePoster.image = img
