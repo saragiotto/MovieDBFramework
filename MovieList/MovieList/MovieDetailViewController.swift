@@ -31,12 +31,20 @@ class MovieDetailViewController: UIViewController {
     
     private var movie = Movie()
     
+    private var curtainsView = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
         UIApplication.shared.statusBarStyle = .lightContent
+        
+        curtainsView.frame = self.view.frame
+        curtainsView.backgroundColor = UIColor.black
+        curtainsView.alpha = 1.0
+        
+//        self.view.addSubview(curtainsView)
+        
         
         movie = self.movieApp!.movieList[movieIndex!]
         
@@ -66,6 +74,8 @@ class MovieDetailViewController: UIViewController {
             } else {
                 self.runTime.text = ""
             }
+            
+//            self.curtainsView.removeFromSuperview()
         }
         
         if let title = movie.title {
