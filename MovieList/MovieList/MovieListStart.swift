@@ -42,9 +42,9 @@ class MovieListStart {
     private(set) var secure_image_base_url: String?
     
     private(set) var backdrop_sizes: [String]?
-    private(set) var preferedBackdropSize: String?
+    private(set) var preferredBackdropSize: String?
     private(set) var poster_sizes: [String]?
-    private(set) var preferedPosterSize: String?
+    private(set) var preferredPosterSize: String?
     
     private(set) var genres: [Int: String]?
     private(set) var totalPages: Int?
@@ -100,7 +100,7 @@ class MovieListStart {
                 self.backdrop_sizes = json["images"]["backdrop_sizes"].arrayValue.map({$0.stringValue})
                 self.poster_sizes = json["images"]["poster_sizes"].arrayValue.map({$0.stringValue})
                 
-                self.definePreferedSizes()
+                self.definepreferredSizes()
                 
                 completition()
             }
@@ -116,7 +116,7 @@ class MovieListStart {
     // once the view is calculated in points, it's necessary
     // multiply it's value by the devive scale factor
     */
-    private func definePreferedSizes() {
+    private func definepreferredSizes() {
         let deviceWidth = Double(UIScreen.main.bounds.size.width)
         let deviceScaleFactor = Double(UIScreen.main.scale)
         
@@ -129,17 +129,17 @@ class MovieListStart {
             if let doubleSize = Double(self.sizeString(size)) {
                 maxSize = size
                 if doubleSize > posterViewWidth {
-                    self.preferedPosterSize = size
+                    self.preferredPosterSize = size
                     break
                 }
             }
         }
         
-        if (self.preferedPosterSize?.isEmpty)! {
+        if (self.preferredPosterSize?.isEmpty)! {
             if !maxSize.isEmpty {
-                self.preferedPosterSize = maxSize
+                self.preferredPosterSize = maxSize
             } else {
-                self.preferedPosterSize = self.poster_sizes?.last
+                self.preferredPosterSize = self.poster_sizes?.last
             }
         }
         
@@ -152,21 +152,21 @@ class MovieListStart {
             if let doubleSize = Double(self.sizeString(size)) {
                 maxSize = size
                 if doubleSize > backdropViewWidth {
-                    self.preferedBackdropSize = size
+                    self.preferredBackdropSize = size
                     break
                 }
             }
         }
         
-        if (self.preferedBackdropSize?.isEmpty)! {
+        if (self.preferredBackdropSize?.isEmpty)! {
             if !maxSize.isEmpty {
-                self.preferedBackdropSize = maxSize
+                self.preferredBackdropSize = maxSize
             } else {
-                self.preferedBackdropSize = self.backdrop_sizes?.last
+                self.preferredBackdropSize = self.backdrop_sizes?.last
             }
         }
 
-        print("Prefered sizes \(self.preferedPosterSize) \(self.preferedBackdropSize) \(deviceWidth) \(deviceScaleFactor)")
+        print("Preferred sizes \(self.preferredPosterSize) \(self.preferredBackdropSize) \(deviceWidth) \(deviceScaleFactor)")
     }
     
     private func sizeString(_ widthSize: String) -> String {

@@ -130,7 +130,7 @@ class MovieDetailViewController: UIViewController {
                     
                     let movieId = self.movie.id
                     
-                    if let url = NSURL(string:"\(self.movieApp!.secure_image_base_url!)\(self.movieApp!.preferedBackdropSize!)\(backdropPath)") {
+                    if let url = NSURL(string:"\(self.movieApp!.secure_image_base_url!)\(self.movieApp!.preferredBackdropSize!)\(backdropPath)") {
                         
                         if let imgData = NSData(contentsOf: url as URL) {
                             

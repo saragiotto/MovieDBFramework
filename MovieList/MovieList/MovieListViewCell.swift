@@ -79,7 +79,7 @@ class MovieListViewCell: UICollectionViewCell {
                     
                     let movieId = self.cellMovie.id
                     
-                    if let url = NSURL(string:"\(self.movieApp!.secure_image_base_url!)\(self.movieApp!.preferedPosterSize!)\(posterPath)") {
+                    if let url = NSURL(string:"\(self.movieApp!.secure_image_base_url!)\(self.movieApp!.preferredPosterSize!)\(posterPath)") {
                         
                         if let imgData = NSData(contentsOf: url as URL) {
                             
