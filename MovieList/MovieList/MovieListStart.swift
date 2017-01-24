@@ -232,11 +232,12 @@ class MovieListStart {
             if let value = response.result.value {
                 let json = JSON(value)
                 
-                let homepage = json["homepage"].string
-                
-                if !homepage!.isEmpty {
-                    movie.homepage = homepage
+                if let homepage = json["homepage"].string {
+                    if !homepage.isEmpty {
+                        movie.homepage = homepage
+                    }
                 }
+                
                 
                 movie.runTime = json["runtime"].int
                 
