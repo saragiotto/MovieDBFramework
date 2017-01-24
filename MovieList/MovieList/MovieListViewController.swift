@@ -141,8 +141,7 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let screenSize = UIScreen.main.bounds
-        let screenWidth = screenSize.width
+        let screenWidth = UIScreen.main.bounds.width
         
         let itemWidth = screenWidth/2 - 2
         let itemHeight = (itemWidth/3) * 5

@@ -107,15 +107,28 @@ class MovieListStart {
         }
     }
     
+    /*
+    // focus on the better experience, the app calculates
+    // the width of each view that will display images
+    // to guarantee that the image file always will be
+    // larger than the view it's presented
+    //
+    // once the view is calculated in points, it's necessary
+    // multiply it's value by the devive scale factor
+    */
     private func definePreferedSizes() {
         let deviceWidth = Double(UIScreen.main.bounds.size.width)
+        let deviceScaleFactor = Double(UIScreen.main.scale)
+        
+        let posterViewWidth = (deviceWidth / 2 - 2) * deviceScaleFactor
+        
         var maxSize = ""
         
         for size in self.poster_sizes! {
             
             if let doubleSize = Double(self.sizeString(size)) {
                 maxSize = size
-                if doubleSize > deviceWidth {
+                if doubleSize > posterViewWidth {
                     self.preferedPosterSize = size
                     break
                 }
@@ -123,8 +136,14 @@ class MovieListStart {
         }
         
         if (self.preferedPosterSize?.isEmpty)! {
-            self.preferedPosterSize = maxSize
+            if !maxSize.isEmpty {
+                self.preferedPosterSize = maxSize
+            } else {
+                self.preferedPosterSize = self.poster_sizes?.last
+            }
         }
+        
+        let backdropViewWidth = deviceWidth * deviceScaleFactor
         
         maxSize = ""
         
@@ -132,7 +151,7 @@ class MovieListStart {
             
             if let doubleSize = Double(self.sizeString(size)) {
                 maxSize = size
-                if doubleSize > deviceWidth {
+                if doubleSize > backdropViewWidth {
                     self.preferedBackdropSize = size
                     break
                 }
@@ -140,10 +159,14 @@ class MovieListStart {
         }
         
         if (self.preferedBackdropSize?.isEmpty)! {
-            self.preferedBackdropSize = maxSize
+            if !maxSize.isEmpty {
+                self.preferedBackdropSize = maxSize
+            } else {
+                self.preferedBackdropSize = self.backdrop_sizes?.last
+            }
         }
 
-        print("Prefered sizes \(self.preferedPosterSize) \(self.preferedBackdropSize) \(deviceWidth)")
+        print("Prefered sizes \(self.preferedPosterSize) \(self.preferedBackdropSize) \(deviceWidth) \(deviceScaleFactor)")
     }
     
     private func sizeString(_ widthSize: String) -> String {
