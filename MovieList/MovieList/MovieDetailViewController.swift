@@ -26,6 +26,8 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var populatiry: UILabel!
     @IBOutlet weak var website: UILabel!
     
+    @IBOutlet weak var detailScrollView: UIScrollView!
+    
     var movieIndex: Int?
     var movieApp: MovieListStart?
     
@@ -157,6 +159,8 @@ class MovieDetailViewController: UIViewController {
                                         self.movieApp!.movieList[self.movieIndex!].backdropImage = img
                                         self.backdropMovie.image = img
                                         
+//                                        let imageAspectRatio = Double(img.size.width / img.size.height)
+//                                        self.updateAspectRatio(imageAspectRatio)
                                     }
                                 }
                             }
@@ -165,6 +169,23 @@ class MovieDetailViewController: UIViewController {
                 }
             }
         }
+        
+        let deviceWidth = UIScreen.main.bounds.size.width
+        
+        let scrollViewHeight = backdropMovie.frame.size.height + overviewInfo.frame.size.height + infoView.frame.size.height
+        
+        print("Scroll view content size \(deviceWidth) \(scrollViewHeight)")
+        
+        self.detailScrollView.contentSize = CGSize(width: deviceWidth, height: scrollViewHeight)
+    }
+    
+    private func updateAspectRatio(_ aspect: Double) {
+        
+        let deviceWidth = Double(UIScreen.main.bounds.size.width)
+        
+        let newHeitgh = deviceWidth / aspect
+        
+        self.backdropMovie.frame.size = CGSize(width: deviceWidth, height: newHeitgh)
     }
     
     

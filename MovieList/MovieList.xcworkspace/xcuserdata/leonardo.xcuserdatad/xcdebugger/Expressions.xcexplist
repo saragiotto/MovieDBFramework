@@ -13,6 +13,11 @@
       </ContextState>
       <ContextState
          contextName = "MovieDetailViewController.viewDidLoad() -&gt; ():MovieDetailViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UIScreen.main.bounds.size">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "MovieListViewController.(viewDidLoad() -&gt; ()).(closure #1):MovieListViewController.swift">
