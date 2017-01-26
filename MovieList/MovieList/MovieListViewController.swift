@@ -50,6 +50,17 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        
+        if let indexPaths = self.collectionView?.indexPathsForVisibleItems {
+        
+            var movieIds = [Int]()
+            
+            for index in indexPaths {
+                movieIds.append(self.movieApp.movieList[index.row].id)
+            }
+            
+            self.movieApp.cleanPosterImages(exceptThis: movieIds)
+        }
     }
     
     private struct Storyboard {

@@ -86,6 +86,27 @@ class MovieListStart {
         }
     }
     
+    public func cleanPosterImages(exceptThis movieIdsDisplayed: [Int]) {
+        
+        for movie in self.movieList {
+            movie.backdropImage = nil
+            
+            if  !movieIdsDisplayed.contains(movie.id) {
+                movie.posterImage = nil
+            }
+        }
+    }
+    
+    public func cleanBackDropsImages(exceptThis movieIdDisplayed: Int) {
+        
+        for movie in self.movieList {
+            
+            if movie.id != movieIdDisplayed {
+                movie.backdropImage = nil
+            }
+        }
+    }
+    
     private func loadConfiguration(completition: @escaping () -> Void) {
         
         Alamofire.request("\(baseUrl)\(EndPoint.configuration.rawValue)\(apiKey)").responseJSON { response in
