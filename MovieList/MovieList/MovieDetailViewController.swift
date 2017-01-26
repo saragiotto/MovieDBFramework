@@ -39,14 +39,6 @@ class MovieDetailViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        UIApplication.shared.statusBarStyle = .lightContent
-        
-        curtainsView.frame = self.view.frame
-        curtainsView.backgroundColor = UIColor.black
-        curtainsView.alpha = 1.0
-        
-//        self.view.addSubview(curtainsView)
-        
         
         movie = self.movieApp!.movieList[movieIndex!]
         
@@ -54,30 +46,11 @@ class MovieDetailViewController: UIViewController {
         cast.text = " "
         runTime.text = ""
         
-        self.movieApp?.loadMovieDetail(movie: movie) {
-            if let homepage = self.movie.homepage {
-                
-                let url = URL(string: homepage)
-                
-                self.website.textColor = UIColor.flatYellowColorDark()
-                self.website.text = url!.host!
-                self.website.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(MovieDetailViewController.openWebsite)))
-                
-            } else {
-                self.website.text = "Not available"
-            }
-            
-            if let movieCast = self.movie.cast {
-                self.cast.text = movieCast.joined(separator: ", ")
-            }
-            
-            if let movieRunTime = self.movie.finalRunTime {
-                self.runTime.text = "\(movieRunTime)"
-            } else {
-                self.runTime.text = ""
-            }
-            
-//            self.curtainsView.removeFromSuperview()
+        if !movie.detailedMovie {
+            print("request movie detail!")
+            requestMovieDetails()
+        } else {
+            putMovieDetailOnScreen()
         }
         
         if let title = movie.title {
@@ -159,8 +132,6 @@ class MovieDetailViewController: UIViewController {
                                         self.movieApp!.movieList[self.movieIndex!].backdropImage = img
                                         self.backdropMovie.image = img
                                         
-//                                        let imageAspectRatio = Double(img.size.width / img.size.height)
-//                                        self.updateAspectRatio(imageAspectRatio)
                                     }
                                 }
                             }
@@ -179,24 +150,6 @@ class MovieDetailViewController: UIViewController {
         self.detailScrollView.contentSize = CGSize(width: deviceWidth, height: scrollViewHeight)
     }
     
-    private func updateAspectRatio(_ aspect: Double) {
-        
-        let deviceWidth = Double(UIScreen.main.bounds.size.width)
-        
-        let newHeitgh = deviceWidth / aspect
-        
-        self.backdropMovie.frame.size = CGSize(width: deviceWidth, height: newHeitgh)
-    }
-    
-    
-    public func openWebsite() {
-        if let website = self.movie.homepage {
-            UIApplication.shared.open(URL.init(string: website)!, options: [:], completionHandler: nil)
-        }
-        
-        return
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -212,4 +165,56 @@ class MovieDetailViewController: UIViewController {
     }
     */
 
+    public func openWebsite() {
+        if let website = self.movie.homepage {
+            UIApplication.shared.open(URL.init(string: website)!, options: [:], completionHandler: nil)
+        }
+        
+        return
+    }
+
+    private func requestMovieDetails() {
+        
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+        curtainsView.frame = self.view.frame
+        curtainsView.backgroundColor = UIColor.black
+        curtainsView.alpha = 1.0
+        
+        self.view.addSubview(curtainsView)
+        
+        self.movieApp?.loadMovieDetail(movie: movie) {
+            
+            self.movie.detailedMovie = true
+            
+            self.putMovieDetailOnScreen()
+            
+            self.curtainsView.removeFromSuperview()
+        }
+    }
+    
+    private func putMovieDetailOnScreen() {
+
+        if let homepage = self.movie.homepage {
+            
+            let url = URL(string: homepage)
+            
+            self.website.textColor = UIColor.flatYellowColorDark()
+            self.website.text = url!.host!
+            self.website.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(MovieDetailViewController.openWebsite)))
+            
+        } else {
+            self.website.text = "Not available"
+        }
+        
+        if let movieCast = self.movie.cast {
+            self.cast.text = movieCast.joined(separator: ", ")
+        }
+        
+        if let movieRunTime = self.movie.finalRunTime {
+            self.runTime.text = "\(movieRunTime)"
+        } else {
+            self.runTime.text = ""
+        }
+    }
 }

@@ -46,6 +46,8 @@ class Movie {
         }
     }
     
+    internal var detailedMovie = false
+    
     init() {
         posterImage = nil
         backdropImage = nil
