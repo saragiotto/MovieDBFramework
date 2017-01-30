@@ -49,6 +49,8 @@ class MovieListStart {
     private(set) var genres: [Int: String]?
     private(set) var totalPages: Int?
     
+    private var manager: SessionManager
+    
     init() {
         
         pageCount = 1
@@ -57,6 +59,12 @@ class MovieListStart {
         page = "&page=\(self.pageCount)"
         
         movieList = [Movie]()
+        
+        
+        let configuration = URLSessionConfiguration.default
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        manager = Alamofire.SessionManager(configuration: configuration)
+        
         
     }
     
@@ -109,7 +117,7 @@ class MovieListStart {
     
     private func loadConfiguration(completition: @escaping () -> Void) {
         
-        Alamofire.request("\(baseUrl)\(EndPoint.configuration.rawValue)\(apiKey)").responseJSON { response in
+        manager.request("\(baseUrl)\(EndPoint.configuration.rawValue)\(apiKey)").responseJSON { response in
             debugPrint(response)
             
             if let value = response.result.value {
@@ -204,7 +212,7 @@ class MovieListStart {
         
         self.genres = [Int: String]()
         
-        Alamofire.request("\(baseUrl)\(EndPoint.genresList.rawValue)\(apiKey)\(language)").responseJSON { response in
+        manager.request("\(baseUrl)\(EndPoint.genresList.rawValue)\(apiKey)\(language)").responseJSON { response in
             debugPrint(response)
             
             if let value = response.result.value {
@@ -226,7 +234,7 @@ class MovieListStart {
     }
     
     private func loadMovieList(completition: @escaping () -> Void) {
-        Alamofire.request("\(baseUrl)\(EndPoint.upComingMovies.rawValue)\(apiKey)\(language)\(page)").responseJSON { response in
+        manager.request("\(baseUrl)\(EndPoint.upComingMovies.rawValue)\(apiKey)\(language)\(page)").responseJSON { response in
             debugPrint(response)
             
             if let value = response.result.value {
@@ -247,7 +255,7 @@ class MovieListStart {
         
         endPointUrl.append("\(appendToResponse)\(appendParms.joined(separator: ","))")
         
-        Alamofire.request(endPointUrl).responseJSON { response in
+        manager.request(endPointUrl).responseJSON { response in
             debugPrint(response)
         
             if let value = response.result.value {
