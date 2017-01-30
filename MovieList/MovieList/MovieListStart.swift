@@ -13,7 +13,7 @@ import SwiftyJSON
 class MovieListStart {
     
     private final let baseUrl = "https://api.themoviedb.org/3/"
-    private final let apiKeyValue = "1f54bd990f1cdfb230adb312546d765d"
+    private final let apiKeyValue = "094bda1680d9981474a3647d78d554bd"
     private final let languageValue = "en-US"
     
     private enum EndPoint: String {
