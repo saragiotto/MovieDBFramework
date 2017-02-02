@@ -118,17 +118,11 @@ class MovieDetailViewController: UIViewController {
                     if let url = NSURL(string:"\(self.movieApp!.secure_image_base_url!)\(self.movieApp!.preferredBackdropSize!)\(backdropPath)") {
                         
                         if let imgData = NSData(contentsOf: url as URL) {
-                            
-                            print("backdrop download complete!")
-                            
                             if let img = UIImage(data: imgData as Data) {
                                 
                                 DispatchQueue.main.async {
                                     
                                     if movieId == self.movie.id {
-                                        
-                                        print("backdrop should appear now!")
-                                        
                                         self.movieApp!.movieList[self.movieIndex!].backdropImage = img
                                         self.backdropMovie.image = img
                                         

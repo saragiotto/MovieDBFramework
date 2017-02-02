@@ -33,8 +33,6 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
 
         // Do any additional setup after loading the view.
         
-        print("lang - \(NSLocale.preferredLanguages)")
-        
         let rightSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.search, target: nil, action: nil)
         
         rightSearchBarButtonItem.tintColor = UIColor.flatYellowColorDark()

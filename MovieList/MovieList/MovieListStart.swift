@@ -15,6 +15,7 @@ class MovieListStart {
     private final let baseUrl = "https://api.themoviedb.org/3/"
     private final let apiKeyValue = "094bda1680d9981474a3647d78d554bd"
     private final let languageValue = "en-US"
+    private final let preferredLanguage:String
     
     private enum EndPoint: String {
         case configuration = "configuration"
@@ -53,19 +54,24 @@ class MovieListStart {
     
     init() {
         
-        pageCount = 1
-        apiKey = "?api_key=\(self.apiKeyValue)"
-        language = "&language=\(self.languageValue)"
-        page = "&page=\(self.pageCount)"
-        
-        movieList = [Movie]()
-        
-        
         let configuration = URLSessionConfiguration.default
         configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         manager = Alamofire.SessionManager(configuration: configuration)
         
+        let langDesignator = NSLocale.preferredLanguages.first
         
+        if let lang = langDesignator {
+            preferredLanguage = "\(lang)"
+        } else {
+            preferredLanguage = self.languageValue
+        }
+        
+        pageCount = 1
+        apiKey = "?api_key=\(self.apiKeyValue)"
+        language = "&language=\(self.preferredLanguage)"
+        page = "&page=\(self.pageCount)"
+        
+        movieList = [Movie]()
     }
     
     public func loadApp(completition: @escaping () -> ()) {
