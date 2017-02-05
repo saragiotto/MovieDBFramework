@@ -167,4 +167,10 @@ final class MovieDBApi {
             completition(movie)
         }
     }
+    
+    func memoryWarning(visibleMovieIds: [Int]?, detailedMovieId: Int?) {
+        if let movies = self.movies {
+            MovieController.memoryWarning(movies: movies, visibleMovieIds, detailedMovieId)
+        }
+    }
 }

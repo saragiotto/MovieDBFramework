@@ -41,22 +41,24 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
         
-//        if let indexPaths = self.collectionView?.indexPathsForVisibleItems {
-//        
-//            var movieIds = [Int]()
-//            
-//            for index in indexPaths {
-//                movieIds.append(self.movieApp.movieList[index.row].id)
-//            }
-//            
-//            self.movieApp.cleanPosterImages(exceptThis: movieIds)
-//        }
+        if let indexPaths = self.collectionView?.indexPathsForVisibleItems {
+        
+            if let movies = MovieDBApi.sharedInstance.movies {
+            
+                var movieIds = [Int]()
+                
+                for index in indexPaths {
+                    movieIds.append(movies[index.row].id)
+                }
+                
+                MovieDBApi.sharedInstance.memoryWarning(visibleMovieIds: movieIds, detailedMovieId: nil)
+            }
+        }
     }
     
     private struct Storyboard {
         static let movieDetailIdentifier = "movieDetail"
     }
-
     
     // MARK: - Navigation
 

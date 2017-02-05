@@ -155,7 +155,7 @@ class MovieDetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
         
-//        self.movieApp?.cleanBackDropsImages(exceptThis: self.movie.id)
+        MovieDBApi.sharedInstance.memoryWarning(visibleMovieIds: nil, detailedMovieId: self.movie.id)
     }
 
     /*

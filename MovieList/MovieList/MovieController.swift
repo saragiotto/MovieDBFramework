@@ -70,4 +70,28 @@ class MovieController {
             }
         }
     }
+    
+    static func memoryWarning(movies:[Movie], _ visibleMovieIds: [Int]?, _ detailedMovieId: Int?) {
+        
+        if visibleMovieIds != nil {
+            
+            for movie in movies {
+                movie.backdropImage = nil
+                
+                if  !visibleMovieIds!.contains(movie.id) {
+                    movie.posterImage = nil
+                }
+            }
+        }
+        
+        if detailedMovieId != nil {
+            
+            for movie in movies {
+                
+                if movie.id != detailedMovieId! {
+                    movie.backdropImage = nil
+                }
+            }
+        }
+    }
 }
