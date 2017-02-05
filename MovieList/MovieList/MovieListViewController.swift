@@ -15,15 +15,7 @@ private let reuseIdentifier = "MovieListViewCell"
 
 class MovieListViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-//    var image_base_url = ""
-//    var secure_image_base_url = ""
-//    var backdrop_sizes = [String]()
-//    var poster_sizes = [String]()
-//    var genres = [Int: String]()
-    
-    private var movieApp = MovieListStart()
-    
-//    var movieList = [Movie]()
+//    private var movieApp = MovieListStart()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,14 +32,10 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         self.navigationItem.setRightBarButtonItems([rightSearchBarButtonItem], animated: true)
 
         UIApplication.shared.statusBarStyle = .lightContent
-    
-        self.movieApp.loadApp() {
+        
+        MovieDBApi.sharedInstance.loadMovies {
             self.collectionView?.reloadData()
         }
-        
-//        MovieDBApi.sharedInstance.loadConfiguration {
-//            print("config loaded!")
-//        }
         
     }
 
@@ -55,16 +43,16 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
         
-        if let indexPaths = self.collectionView?.indexPathsForVisibleItems {
-        
-            var movieIds = [Int]()
-            
-            for index in indexPaths {
-                movieIds.append(self.movieApp.movieList[index.row].id)
-            }
-            
-            self.movieApp.cleanPosterImages(exceptThis: movieIds)
-        }
+//        if let indexPaths = self.collectionView?.indexPathsForVisibleItems {
+//        
+//            var movieIds = [Int]()
+//            
+//            for index in indexPaths {
+//                movieIds.append(self.movieApp.movieList[index.row].id)
+//            }
+//            
+//            self.movieApp.cleanPosterImages(exceptThis: movieIds)
+//        }
     }
     
     private struct Storyboard {
@@ -82,7 +70,7 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         switch segue.identifier! {
         case Storyboard.movieDetailIdentifier:
             if let movieDetailVC = segue.destination as? MovieDetailViewController {
-                movieDetailVC.movieApp = self.movieApp
+//                movieDetailVC.movieApp = self.movieApp
                 movieDetailVC.movieIndex = self.collectionView!.indexPathsForSelectedItems!.first!.row
             }
         default:
@@ -101,7 +89,11 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         
-        return self.movieApp.movieList.count
+        if let movies = MovieDBApi.sharedInstance.movies {
+            return movies.count
+        } else {
+            return 0
+        }
 
     }
 
@@ -109,13 +101,12 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MovieListViewCell
         
         // Configure the cell
-        
-        cell.movieApp = self.movieApp
+
         cell.movieIndex = indexPath.row
-        
-        if (indexPath.row == self.movieApp.movieList.count - 1) {
-            self.movieApp.loadNextPage {
-                print("carregou proxima pagina! \(self.movieApp.movieList.count)")
+
+        if (indexPath.row == MovieDBApi.sharedInstance.movies!.count - 1) {
+            MovieDBApi.sharedInstance.loadMovies() {
+                print("carregou proxima pagina! \(MovieDBApi.sharedInstance.movies!.count)")
                 self.collectionView?.reloadData()
             }
         }

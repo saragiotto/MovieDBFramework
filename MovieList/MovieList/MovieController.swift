@@ -17,8 +17,6 @@ class MovieController {
         manager.request("\(url)").responseJSON { response in
             debugPrint(response)
             
-            
-            
             if let value = response.result.value {
                 let json = JSON(value)
                 

@@ -13,7 +13,7 @@ class Configuration {
     let imageBaseUrl: String
     let secureImageBaseUrl: String
     let backdropSize: String
-    let posterSizes: String
+    let posterSize: String
     
     init(imgUrl: String?, secImgUrl: String?, bdSize: String?, pSize: String?) {
         
@@ -36,9 +36,9 @@ class Configuration {
         }
         
         if let p = pSize {
-            posterSizes = p
+            posterSize = p
         } else {
-            posterSizes = ""
+            posterSize = ""
         }
     }
 }

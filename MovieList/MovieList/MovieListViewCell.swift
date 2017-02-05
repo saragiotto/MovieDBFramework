@@ -21,18 +21,18 @@ class MovieListViewCell: UICollectionViewCell {
         }
     }
     
-    var movieApp: MovieListStart?
-    
     private var cellMovie = Movie()
     
     private func updateCell() {
+        
+        let movieApi = MovieDBApi.sharedInstance
         
         moviePoster?.image = nil
         movieName?.text = nil
         movieGenre?.text = nil
         movieReleaseDate?.text = nil
         
-        cellMovie = self.movieApp!.movieList[movieIndex!]
+        cellMovie = movieApi.movies![movieIndex!]
         
         if let title = cellMovie.title {
             self.movieName.text = title
@@ -47,7 +47,7 @@ class MovieListViewCell: UICollectionViewCell {
         if cellMovie.genres_ids.isEmpty {
             self.movieGenre.text = "-"
         } else {
-            self.movieGenre.text = self.movieApp!.genres![cellMovie.genres_ids[0]]
+            self.movieGenre.text = Genre.genreName(id: cellMovie.genres_ids[0], genres: movieApi.genres!)
         }
         
         if let releaseDate = cellMovie.releaseDate {
@@ -79,7 +79,9 @@ class MovieListViewCell: UICollectionViewCell {
                     
                     let movieId = self.cellMovie.id
                     
-                    if let url = NSURL(string:"\(self.movieApp!.secure_image_base_url!)\(self.movieApp!.preferredPosterSize!)\(posterPath)") {
+                    let urlString = "\(movieApi.configuration!.secureImageBaseUrl)\(movieApi.configuration!.posterSize)\(posterPath)"
+                    
+                    if let url = NSURL(string:urlString) {
                         
                         if let imgData = NSData(contentsOf: url as URL) {
                             
@@ -89,9 +91,9 @@ class MovieListViewCell: UICollectionViewCell {
                                     
                                     if movieId == self.cellMovie.id {
                                         
-                                        self.movieApp!.movieList[self.movieIndex!].posterImage = img
+                                        self.cellMovie.posterImage = img
                                         self.moviePoster.image = img
-                                        self.setNeedsDisplay()
+//                                        self.setNeedsDisplay()
                                     }
                                 }
                             }

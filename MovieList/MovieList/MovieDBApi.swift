@@ -41,18 +41,19 @@ final class MovieDBApi {
     }
     
     private var pageTag: String
-    private var pageCount: Int {
+    private var pageRequested: Int {
         didSet {
-            pageTag = "&page=\(pageCount)"
+            pageTag = "&page=\(pageRequested)"
         }
     }
     
     private var totalPages: Int?
+    private var pageLoaded: Int?
     
     private let manager: SessionManager
-    private var configuration: Configuration?
-    private var movies: [Movie]?
-    private var genres: [Genre]?
+    private(set) var configuration: Configuration?
+    private(set) var genres: [Genre]?
+    private(set) var movies: [Movie]?
     
     static let sharedInstance: MovieDBApi = {
         let instance = MovieDBApi()
@@ -66,12 +67,12 @@ final class MovieDBApi {
         urlConfig.requestCachePolicy = .reloadIgnoringLocalCacheData
         manager = Alamofire.SessionManager(configuration: urlConfig)
         
-        pageCount = 1
+        pageRequested = 1
         apiKeyValue = "094bda1680d9981474a3647d78d554bd"
         languageValue = "en-US"
         
         apiKeyTag = "?api_key=\(self.apiKeyValue)"
-        pageTag = "&page=\(self.pageCount)"
+        pageTag = "&page=\(self.pageRequested)"
         languageTag = "&language=\(self.languageValue)"
         
         if let langDesignator = NSLocale.preferredLanguages.first{
@@ -107,12 +108,26 @@ final class MovieDBApi {
     
     private func loadMovieList(completition: @escaping () -> ()) {
         
+        if let pgLoaded = pageLoaded {
+            if pageRequested == pgLoaded && pageRequested < totalPages!{
+                pageRequested += 1
+            } else {
+                return
+            }
+        }
+        
         let moviesUrl = "\(baseUrl)\(EndPoint.upComingMovies.rawValue)\(apiKeyTag)\(languageTag)\(pageTag)"
         
         MovieController.loadMovies(manager, url: moviesUrl) { movieList, totalPages in
             
-            self.movies = movieList
+            if let _ = self.movies {
+                self.movies! += movieList
+            } else {
+                self.movies = movieList
+            }
+            
             self.totalPages = totalPages
+            self.pageLoaded = self.pageRequested
             completition()
             
         }
