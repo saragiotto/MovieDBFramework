@@ -23,13 +23,11 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
 
         // Do any additional setup after loading the view.
         
-        let rightSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.search, target: nil, action: nil)
+        let rightSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "About", style: .plain, target: nil, action: nil)
         
         rightSearchBarButtonItem.tintColor = UIColor.flatYellowColorDark()
         
         self.navigationItem.setRightBarButtonItems([rightSearchBarButtonItem], animated: true)
-
-        UIApplication.shared.statusBarStyle = .lightContent
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         MovieDBApi.sharedInstance.loadMovies {
