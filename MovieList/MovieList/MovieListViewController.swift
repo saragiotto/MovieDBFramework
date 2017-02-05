@@ -14,8 +14,6 @@ import ChameleonFramework
 private let reuseIdentifier = "MovieListViewCell"
 
 class MovieListViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
-//    private var movieApp = MovieListStart()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +68,6 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         switch segue.identifier! {
         case Storyboard.movieDetailIdentifier:
             if let movieDetailVC = segue.destination as? MovieDetailViewController {
-//                movieDetailVC.movieApp = self.movieApp
                 movieDetailVC.movieIndex = self.collectionView!.indexPathsForSelectedItems!.first!.row
             }
         default:

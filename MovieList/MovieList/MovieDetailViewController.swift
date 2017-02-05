@@ -29,7 +29,6 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var detailScrollView: UIScrollView!
     
     var movieIndex: Int?
-    var movieApp: MovieListStart?
     
     private var movie = Movie()
     
@@ -40,7 +39,7 @@ class MovieDetailViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        movie = self.movieApp!.movieList[movieIndex!]
+        movie = MovieDBApi.sharedInstance.movies![movieIndex!]
         
         website.text = " "
         cast.text = " "
@@ -90,7 +89,9 @@ class MovieDetailViewController: UIViewController {
         var genreArray = [String]()
         
         for genreId in movie.genres_ids {
-            genreArray.append(self.movieApp!.genres![genreId]!)
+            if let name = Genre.genreName(id: genreId, genres: MovieDBApi.sharedInstance.genres!) {
+                genreArray.append(name)
+            }
         }
         
         if !genreArray.isEmpty {
@@ -115,7 +116,11 @@ class MovieDetailViewController: UIViewController {
                     
                     let movieId = self.movie.id
                     
-                    if let url = NSURL(string:"\(self.movieApp!.secure_image_base_url!)\(self.movieApp!.preferredBackdropSize!)\(backdropPath)") {
+                    let configs = MovieDBApi.sharedInstance.configuration!
+                    
+                    let urlString = "\(configs.secureImageBaseUrl)\(configs.backdropSize)\(backdropPath)"
+                    
+                    if let url = NSURL(string:urlString) {
                         
                         if let imgData = NSData(contentsOf: url as URL) {
                             if let img = UIImage(data: imgData as Data) {
@@ -123,7 +128,7 @@ class MovieDetailViewController: UIViewController {
                                 DispatchQueue.main.async {
                                     
                                     if movieId == self.movie.id {
-                                        self.movieApp!.movieList[self.movieIndex!].backdropImage = img
+                                        self.movie.backdropImage = img
                                         self.backdropMovie.image = img
                                         
                                     }
@@ -150,7 +155,7 @@ class MovieDetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
         
-        self.movieApp?.cleanBackDropsImages(exceptThis: self.movie.id)
+//        self.movieApp?.cleanBackDropsImages(exceptThis: self.movie.id)
     }
 
     /*
@@ -181,9 +186,7 @@ class MovieDetailViewController: UIViewController {
         
         self.view.addSubview(curtainsView)
         
-        self.movieApp?.loadMovieDetail(movie: movie) {
-            
-            self.movie.detailedMovie = true
+        MovieDBApi.sharedInstance.loadMovieDetail(movie) { movie in
             
             self.putMovieDetailOnScreen()
             
@@ -212,7 +215,7 @@ class MovieDetailViewController: UIViewController {
         if let movieRunTime = self.movie.finalRunTime {
             self.runTime.text = "\(movieRunTime)"
         } else {
-            self.runTime.text = ""
+            self.runTime.text = "-"
         }
     }
 }

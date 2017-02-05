@@ -14,8 +14,6 @@ class GenreController {
     
     static func loadGenres(_ manager: SessionManager, url: String ,completition: @escaping (_:[Genre]) -> ()) {
         
-//        "\(baseUrl)\(EndPoint.genresList.rawValue)\(apiKey)\(language)"
-        
         manager.request("\(url)").responseJSON { response in
             debugPrint(response)
             

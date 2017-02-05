@@ -31,4 +31,43 @@ class MovieController {
         }
     
     }
+    
+    static func loadMovieDetail(_ manager: SessionManager, url: String, movie: Movie, completition: @escaping (_:Movie) -> ()) {
+        
+        manager.request(url).responseJSON { response in
+            debugPrint(response)
+            
+            if let value = response.result.value {
+                let json = JSON(value)
+                
+                movie.detailedMovie = true
+                
+                if let homepage = json["homepage"].string {
+                    if !homepage.isEmpty {
+                        movie.homepage = homepage
+                    }
+                }
+                
+                
+                if let runTime = json["runtime"].int {
+                    movie.runTime = runTime
+                }
+                
+                
+                if let credits = json["credits"].dictionary {
+                    let castInfo =  credits["cast"]?.arrayValue.map({$0["name"].stringValue})
+                    
+                    if !castInfo!.isEmpty {
+                        if castInfo!.count < 6 {
+                            movie.cast = castInfo
+                        } else {
+                            movie.cast = Array(castInfo![0..<5])
+                        }
+                    }
+                }
+                
+                completition(movie)
+            }
+        }
+    }
 }

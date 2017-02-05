@@ -155,4 +155,16 @@ final class MovieDBApi {
             }
         }
     }
+    
+    func loadMovieDetail(_ movie: Movie, completition: @escaping (_:Movie) -> ()) {
+        
+        var url = "\(baseUrl)\(EndPoint.movieDetail.rawValue)\(movie.id)\(apiKeyTag)\(languageTag)"
+        
+        url.append("\(appendToResponse)\(appendParms.joined(separator: ","))")
+        
+        MovieController.loadMovieDetail(manager, url: url, movie: movie) { movie in
+            
+            completition(movie)
+        }
+    }
 }
