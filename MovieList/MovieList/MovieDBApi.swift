@@ -173,4 +173,26 @@ final class MovieDBApi {
             MovieController.memoryWarning(movies: movies, visibleMovieIds, detailedMovieId)
         }
     }
+    
+    func posterImage(_ movie: Movie, completition: @escaping (_:UIImage)->()) {
+        
+        let url = "\(self.configuration!.secureImageBaseUrl)\(self.configuration!.posterSize)\(movie.posterPath!)"
+
+        MovieController.posterImage(movie, url: url) { image in
+            if image != nil {
+                completition(image!)
+            }
+        }
+    }
+    
+    func backdropImage(_ movie: Movie, completition: @escaping (_:UIImage)->()) {
+        
+        let url = "\(self.configuration!.secureImageBaseUrl)\(self.configuration!.posterSize)\(movie.backdropPath!)"
+        
+        MovieController.backdropImage(movie, url: url) { image in
+            if image != nil {
+                completition(image!)
+            }
+        }
+    }
 }

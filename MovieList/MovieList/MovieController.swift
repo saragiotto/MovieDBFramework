@@ -94,4 +94,58 @@ class MovieController {
             }
         }
     }
+    
+    static func posterImage(_ movie: Movie, url: String, completition: @escaping (_:UIImage?) -> ()) {
+        
+        let movieId = movie.id
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            
+            if let url = NSURL(string:url) {
+                
+                if let imgData = NSData(contentsOf: url as URL) {
+                    
+                    if let img = UIImage(data: imgData as Data) {
+                        
+                        DispatchQueue.main.async {
+                            
+                            if movieId == movie.id {
+
+                                movie.posterImage = img
+                                completition(img)
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    static func backdropImage(_ movie: Movie, url: String, completition: @escaping (_:UIImage?) -> ()) {
+        
+        let movieId = movie.id
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            
+            if let url = NSURL(string:url) {
+                
+                if let imgData = NSData(contentsOf: url as URL) {
+                    
+                    if let img = UIImage(data: imgData as Data) {
+                        
+                        DispatchQueue.main.async {
+                            
+                            if movieId == movie.id {
+                                
+                                movie.backdropImage = img
+                                completition(img)
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

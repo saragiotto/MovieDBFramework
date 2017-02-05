@@ -73,32 +73,10 @@ class MovieListViewCell: UICollectionViewCell {
             self.setNeedsDisplay()
         } else {
             
-            if let posterPath = cellMovie.posterPath {
+            if cellMovie.posterPath != nil {
                 
-                DispatchQueue.global(qos: .userInitiated).async {
-                    
-                    let movieId = self.cellMovie.id
-                    
-                    let urlString = "\(movieApi.configuration!.secureImageBaseUrl)\(movieApi.configuration!.posterSize)\(posterPath)"
-                    
-                    if let url = NSURL(string:urlString) {
-                        
-                        if let imgData = NSData(contentsOf: url as URL) {
-                            
-                            if let img = UIImage(data: imgData as Data) {
-                                
-                                DispatchQueue.main.async {
-                                    
-                                    if movieId == self.cellMovie.id {
-                                        
-                                        self.cellMovie.posterImage = img
-                                        self.moviePoster.image = img
-//                                        self.setNeedsDisplay()
-                                    }
-                                }
-                            }
-                        }
-                    }
+                MovieDBApi.sharedInstance.posterImage(cellMovie) { image in
+                    self.moviePoster.image = image
                 }
             } else {
                 self.moviePoster.image = UIImage(named: "NoPosterNew.png")!

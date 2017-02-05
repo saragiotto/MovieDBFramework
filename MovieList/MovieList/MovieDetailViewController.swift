@@ -110,33 +110,11 @@ class MovieDetailViewController: UIViewController {
         if let backDropimg = movie.backdropImage {
             backdropMovie.image = backDropimg
         } else {
-            if let backdropPath = movie.backdropPath {
+            if movie.backdropPath != nil {
                 
-                DispatchQueue.global(qos: .userInitiated).async {
-                    
-                    let movieId = self.movie.id
-                    
-                    let configs = MovieDBApi.sharedInstance.configuration!
-                    
-                    let urlString = "\(configs.secureImageBaseUrl)\(configs.backdropSize)\(backdropPath)"
-                    
-                    if let url = NSURL(string:urlString) {
-                        
-                        if let imgData = NSData(contentsOf: url as URL) {
-                            if let img = UIImage(data: imgData as Data) {
-                                
-                                DispatchQueue.main.async {
-                                    
-                                    if movieId == self.movie.id {
-                                        self.movie.backdropImage = img
-                                        self.backdropMovie.image = img
-                                        
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                MovieDBApi.sharedInstance.backdropImage(movie) { image in
+                    self.backdropMovie.image = image
+                }                
             } else {
                 backdropMovie.image = UIImage(named: "NoPosterNew.png")!
             }
