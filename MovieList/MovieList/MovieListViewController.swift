@@ -45,9 +45,9 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
             self.collectionView?.reloadData()
         }
         
-        MovieDBApi.sharedInstance.loadConfiguration {
-            print("config loaded!")
-        }
+//        MovieDBApi.sharedInstance.loadConfiguration {
+//            print("config loaded!")
+//        }
         
     }
 

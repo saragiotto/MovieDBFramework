@@ -47,7 +47,7 @@ final class MovieDBApi {
         }
     }
     
-    private(set) var totalPages: Int?
+    private var totalPages: Int?
     
     private let manager: SessionManager
     private var configuration: Configuration?
@@ -83,7 +83,7 @@ final class MovieDBApi {
         genres = nil
     }
     
-    func loadConfiguration(completition: @escaping () -> ()) {
+    private func loadConfiguration(completition: @escaping () -> ()) {
         
         let configUrl = "\(baseUrl)\(EndPoint.configuration.rawValue)\(apiKeyTag)"
         
@@ -94,4 +94,50 @@ final class MovieDBApi {
         }
     }
     
+    private func loadGenres(completition: @escaping () -> ()) {
+        
+        let genresUrl = "\(baseUrl)\(EndPoint.genresList.rawValue)\(apiKeyTag)\(languageTag)"
+        
+        GenreController.loadGenres(manager, url: genresUrl) { genres in
+            
+            self.genres = genres
+            completition()
+        }
+    }
+    
+    private func loadMovieList(completition: @escaping () -> ()) {
+        
+        let moviesUrl = "\(baseUrl)\(EndPoint.upComingMovies.rawValue)\(apiKeyTag)\(languageTag)\(pageTag)"
+        
+        MovieController.loadMovies(manager, url: moviesUrl) { movieList, totalPages in
+            
+            self.movies = movieList
+            self.totalPages = totalPages
+            completition()
+            
+        }
+    }
+    
+    func loadMovies(completition: @escaping () -> ()) {
+        
+        if configuration == nil {
+            self.loadConfiguration {
+                if self.genres == nil {
+                    self.loadGenres {
+                        self.loadMovieList {
+                            completition()
+                        }
+                    }
+                } else {
+                    self.loadMovieList {
+                        completition()
+                    }
+                }
+            }
+        } else {
+            self.loadMovieList {
+                completition()
+            }
+        }
+    }
 }

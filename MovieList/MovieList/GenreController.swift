@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Alamofire
+import SwiftyJSON
 
 class GenreController {
     
@@ -22,12 +24,12 @@ class GenreController {
                 let json = JSON(value)
                 
                 let genres = json["genres"]
-                let genreList = [Genre]()
+                var genreList = [Genre]()
                 
                 for (_, subJSON):(String, JSON) in genres {
                     if let genreId = subJSON["id"].int {
                         if let genreString = subJSON["name"].string {
-                            genreList.append(Genre())
+                            genreList.append(Genre(id: genreId, name: genreString))
                         }
                     }
                 }

@@ -20,8 +20,8 @@ class Genre {
     static func genreName(id: Int, genres: [Genre]) -> String? {
         
         for genre in genres {
-            if genre.id == id {
-                return genre.name
+            if genre.genreId == id {
+                return genre.genreName
             }
         }
         
