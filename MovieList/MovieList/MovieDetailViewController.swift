@@ -117,7 +117,19 @@ class MovieDetailViewController: UIViewController {
                 MovieDBApi.sharedInstance.backdropImage(movie) { image in
                     
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    
+                    let bdMovie = UIImageView(image: UIImage())
+                    bdMovie.frame = self.backdropMovie.frame
+                    bdMovie.alpha = 1.0
+                    bdMovie.backgroundColor = UIColor.black
+                    self.backdropMovie.addSubview(bdMovie)
                     self.backdropMovie.image = image
+                    
+                    UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
+                        bdMovie.alpha = 0.0
+                    }, completion: { finished in
+                        bdMovie.removeFromSuperview()
+                    })
                 }                
             } else {
                 backdropMovie.image = UIImage(named: "NoPosterNew.png")!

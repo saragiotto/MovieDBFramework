@@ -77,7 +77,19 @@ class MovieListViewCell: UICollectionViewCell {
                 MovieDBApi.sharedInstance.posterImage(cellMovie) { image in
 
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    
+                    let posterMovie = UIImageView(image: UIImage())
+                    posterMovie.frame = self.moviePoster.frame
+                    posterMovie.alpha = 1.0
+                    posterMovie.backgroundColor = UIColor.black
+                    self.moviePoster.addSubview(posterMovie)
                     self.moviePoster.image = image
+                    
+                    UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+                        posterMovie.alpha = 0.0
+                    }, completion: { finished in
+                        posterMovie.removeFromSuperview()
+                    })
                 }
             } else {
                 self.moviePoster.image = UIImage(named: "NoPosterNew.png")!
