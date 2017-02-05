@@ -70,12 +70,13 @@ class MovieListViewCell: UICollectionViewCell {
         
         if let posterImg = cellMovie.posterImage {
             self.moviePoster.image = posterImg
-            self.setNeedsDisplay()
         } else {
             
             if cellMovie.posterPath != nil {
-                
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
                 MovieDBApi.sharedInstance.posterImage(cellMovie) { image in
+
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     self.moviePoster.image = image
                 }
             } else {

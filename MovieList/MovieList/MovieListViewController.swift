@@ -31,8 +31,10 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
 
         UIApplication.shared.statusBarStyle = .lightContent
         
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         MovieDBApi.sharedInstance.loadMovies {
             self.collectionView?.reloadData()
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
         }
         
     }
@@ -104,13 +106,25 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         cell.movieIndex = indexPath.row
 
         if (indexPath.row == MovieDBApi.sharedInstance.movies!.count - 1) {
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            
             MovieDBApi.sharedInstance.loadMovies() {
+                
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                
                 print("carregou proxima pagina! \(MovieDBApi.sharedInstance.movies!.count)")
                 self.collectionView?.reloadData()
             }
         }
 
         return cell
+    }
+    
+    override public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        
     }
 
     // MARK: UICollectionViewDelegate

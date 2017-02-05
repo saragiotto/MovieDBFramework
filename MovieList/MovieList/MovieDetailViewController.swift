@@ -112,7 +112,11 @@ class MovieDetailViewController: UIViewController {
         } else {
             if movie.backdropPath != nil {
                 
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                
                 MovieDBApi.sharedInstance.backdropImage(movie) { image in
+                    
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     self.backdropMovie.image = image
                 }                
             } else {
