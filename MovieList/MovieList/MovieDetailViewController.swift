@@ -132,6 +132,8 @@ class MovieDetailViewController: UIViewController {
                         }
                     }
                 }
+            } else {
+                backdropMovie.image = UIImage(named: "NoPosterNew.png")!
             }
         }
         

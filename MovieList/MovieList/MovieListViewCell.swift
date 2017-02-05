@@ -99,7 +99,7 @@ class MovieListViewCell: UICollectionViewCell {
                     }
                 }
             } else {
-                self.moviePoster.image = UIImage(named: "NoPoster.png")!
+                self.moviePoster.image = UIImage(named: "NoPosterNew.png")!
             }
         }
     }
