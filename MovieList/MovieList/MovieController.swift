@@ -97,7 +97,7 @@ class MovieController {
     
     static func posterImage(_ movie: Movie, url: String, completition: @escaping (_:UIImage?) -> ()) {
         
-        let movieId = movie.id
+//        let movieId = movie.id
         
         DispatchQueue.global(qos: .userInitiated).async {
             
@@ -107,14 +107,15 @@ class MovieController {
                     
                     if let img = UIImage(data: imgData as Data) {
                         
+                        movie.posterImage = img
+                        
                         DispatchQueue.main.async {
                             
-                            if movieId == movie.id {
+//                            if movieId == movie.id {
 
-                                movie.posterImage = img
                                 completition(img)
 
-                            }
+//                            }
                         }
                     }
                 }
