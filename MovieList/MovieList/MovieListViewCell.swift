@@ -100,7 +100,7 @@ class MovieListViewCell: UICollectionViewCell {
         self.moviePoster.addSubview(posterMovie)
         self.moviePoster.image = posterImage
         
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveEaseOut, animations: {
             posterMovie.alpha = 0.0
         }, completion: { finished in
             posterMovie.removeFromSuperview()

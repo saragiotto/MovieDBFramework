@@ -189,7 +189,12 @@ class MovieDetailViewController: UIViewController {
             
             self.putMovieDetailOnScreen()
             
-            self.curtainsView.removeFromSuperview()
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
+                self.curtainsView.alpha = 0.0
+            }, completion: { finished in
+                self.curtainsView.removeFromSuperview()
+            })
+            
         }
     }
     
