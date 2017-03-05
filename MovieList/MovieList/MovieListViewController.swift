@@ -23,7 +23,7 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
 
         // Do any additional setup after loading the view.
         
-        let rightSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "About", style: .plain, target: nil, action: nil)
+        let rightSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "About", style: .plain, target: self, action: #selector(MovieListViewController.presentAboutScreen))
         
         rightSearchBarButtonItem.tintColor = UIColor.flatYellowColorDark()
         
@@ -58,6 +58,7 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
     
     private struct Storyboard {
         static let movieDetailIdentifier = "movieDetail"
+        static let aboutScreenIdentifier = "aboutViewController"
     }
     
     // MARK: - Navigation
@@ -173,6 +174,12 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 4.0
+    }
+    
+    public func presentAboutScreen() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier :Storyboard.aboutScreenIdentifier) as! AboutViewController
+        self.present(viewController, animated: true)
     }
 
 }
