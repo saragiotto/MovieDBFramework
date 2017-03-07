@@ -35,6 +35,10 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
         }
         
+        MovieDBApi.sharedInstance.performWhenNetworkIsBackAlive {
+            self.collectionView?.reloadData()
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,6 +58,10 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
                 MovieDBApi.sharedInstance.memoryWarning(visibleMovieIds: movieIds, detailedMovieId: nil)
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.collectionView?.reloadData()
     }
     
     private struct Storyboard {

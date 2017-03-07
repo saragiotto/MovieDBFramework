@@ -36,6 +36,17 @@ class MovieDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.displayMovie()
+        
+        MovieDBApi.sharedInstance.performWhenNetworkIsBackAlive {
+            self.displayMovie()
+        }
+        // Do any additional setup after loading the view.
+    }
+    
+    private func displayMovie() {
+        super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         

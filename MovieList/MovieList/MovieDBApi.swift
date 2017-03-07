@@ -55,6 +55,24 @@ final class MovieDBApi {
     private(set) var genres: [Genre]?
     private(set) var movies: [Movie]?
     
+    private let networkManager = NetworkReachabilityManager(host: "www.apple.com")
+    
+    func performWhenNetworkIsBackAlive(completition: @escaping () -> ()) {
+        
+        self.networkManager?.listener = { status in
+            print("Network Status Changed: \(status)")
+            
+            switch status {
+            case .reachable(_ ):
+                completition()
+            default:
+                break
+            }
+        }
+    
+        self.networkManager?.startListening()
+    }
+    
     static let sharedInstance: MovieDBApi = {
         let instance = MovieDBApi()
         
