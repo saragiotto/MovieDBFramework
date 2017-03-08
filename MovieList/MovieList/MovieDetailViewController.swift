@@ -147,19 +147,23 @@ class MovieDetailViewController: UIViewController {
             }
         }
         
-        let deviceWidth = UIScreen.main.bounds.size.width
-        let deviceHeight = UIScreen.main.bounds.size.height
-        
-        let scrollViewHeight = backdropMovie.frame.size.height + overviewInfo.frame.size.height + infoView.frame.size.height
-        
-        print("Scroll view content size \(deviceHeight) \(scrollViewHeight)")
-        
-        self.detailScrollView.contentSize = CGSize(width: deviceWidth, height: scrollViewHeight)
-        
-        if (scrollViewHeight < deviceHeight) {
-            self.detailScrollView.isScrollEnabled = false
-        }
     }
+    
+//    override func viewDidLayoutSubviews() {
+//        
+//        let deviceWidth = UIScreen.main.bounds.size.width
+//        let deviceHeight = UIScreen.main.bounds.size.height
+//        
+//        let scrollViewHeight = backdropMovie.frame.size.height + overviewInfo.frame.size.height + infoView.frame.size.height
+//        
+//        print("Scroll view content size \(deviceHeight) \(scrollViewHeight)")
+//        
+//        self.detailScrollView.contentSize = CGSize(width: deviceWidth, height: scrollViewHeight)
+//        
+//        if (scrollViewHeight < deviceHeight) {
+//            self.detailScrollView.isScrollEnabled = false
+//        }
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
