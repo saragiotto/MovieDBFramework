@@ -112,9 +112,12 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
 
         cell.movieIndex = indexPath.row
 
+        print("CellDisp \(indexPath.row)")
         if (indexPath.row == MovieDBApi.sharedInstance.movies!.count - 1) {
             
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            
+            print("carregando proxima pagina!")
             
             MovieDBApi.sharedInstance.loadMovies() {
                 

@@ -130,9 +130,13 @@ final class MovieDBApi {
             if pageRequested == pgLoaded && pageRequested < totalPages!{
                 pageRequested += 1
             } else {
-                return
+                if pageRequested == totalPages!{
+                    return
+                }
             }
         }
+        
+        print("MovieList Requested \(pageRequested) \(pageLoaded)")
         
         let moviesUrl = "\(baseUrl)\(EndPoint.upComingMovies.rawValue)\(apiKeyTag)\(languageTag)\(pageTag)"
         
@@ -146,6 +150,9 @@ final class MovieDBApi {
             
             self.totalPages = totalPages
             self.pageLoaded = self.pageRequested
+            
+            print("MovieList Response \(self.pageRequested) \(self.pageLoaded)")
+            
             completition()
             
         }

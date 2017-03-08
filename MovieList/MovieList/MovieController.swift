@@ -14,6 +14,7 @@ class MovieController {
     
     static func loadMovies(_ manager: SessionManager, url: String, completition: @escaping (_:[Movie],_:Int?) -> ()) {
     
+        print("Alamofire [Request]")
         manager.request("\(url)").responseJSON { response in
             debugPrint(response)
             
