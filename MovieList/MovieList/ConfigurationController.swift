@@ -49,8 +49,9 @@ class ConfigurationController {
             
             if let doubleSize = Double(self.sizeString(size)) {
                 maxSize = size
-                if doubleSize > posterViewWidth {
+                if doubleSize < posterViewWidth {
                     preferredPosterSize = size
+                } else {
                     break
                 }
             }
@@ -63,6 +64,8 @@ class ConfigurationController {
                 preferredPosterSize = posterSizes.last!
             }
         }
+        
+        print("preferredPosterSize: \(preferredPosterSize)")
         
         return preferredPosterSize
     }
@@ -80,8 +83,9 @@ class ConfigurationController {
             
             if let doubleSize = Double(self.sizeString(size)) {
                 maxSize = size
-                if doubleSize > backdropViewWidth {
+                if doubleSize < backdropViewWidth {
                     preferredBackdropSize = size
+                } else {
                     break
                 }
             }
