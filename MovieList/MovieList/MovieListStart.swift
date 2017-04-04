@@ -13,8 +13,9 @@ import SwiftyJSON
 class MovieListStart {
     
     private final let baseUrl = "https://api.themoviedb.org/3/"
-    private final let apiKeyValue = "1f54bd990f1cdfb230adb312546d765d"
+    private final let apiKeyValue = "094bda1680d9981474a3647d78d554bd"
     private final let languageValue = "en-US"
+    private final let preferredLanguage:String
     
     private enum EndPoint: String {
         case configuration = "configuration"
@@ -49,15 +50,28 @@ class MovieListStart {
     private(set) var genres: [Int: String]?
     private(set) var totalPages: Int?
     
+    private var manager: SessionManager
+    
     init() {
+        
+        let configuration = URLSessionConfiguration.default
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        manager = Alamofire.SessionManager(configuration: configuration)
+        
+        let langDesignator = NSLocale.preferredLanguages.first
+        
+        if let lang = langDesignator {
+            preferredLanguage = "\(lang)"
+        } else {
+            preferredLanguage = self.languageValue
+        }
         
         pageCount = 1
         apiKey = "?api_key=\(self.apiKeyValue)"
-        language = "&language=\(self.languageValue)"
+        language = "&language=\(self.preferredLanguage)"
         page = "&page=\(self.pageCount)"
         
         movieList = [Movie]()
-        
     }
     
     public func loadApp(completition: @escaping () -> ()) {
@@ -86,9 +100,30 @@ class MovieListStart {
         }
     }
     
+    public func cleanPosterImages(exceptThis movieIdsDisplayed: [Int]) {
+        
+        for movie in self.movieList {
+            movie.backdropImage = nil
+            
+            if  !movieIdsDisplayed.contains(movie.id) {
+                movie.posterImage = nil
+            }
+        }
+    }
+    
+    public func cleanBackDropsImages(exceptThis movieIdDisplayed: Int) {
+        
+        for movie in self.movieList {
+            
+            if movie.id != movieIdDisplayed {
+                movie.backdropImage = nil
+            }
+        }
+    }
+    
     private func loadConfiguration(completition: @escaping () -> Void) {
         
-        Alamofire.request("\(baseUrl)\(EndPoint.configuration.rawValue)\(apiKey)").responseJSON { response in
+        manager.request("\(baseUrl)\(EndPoint.configuration.rawValue)\(apiKey)").responseJSON { response in
             debugPrint(response)
             
             if let value = response.result.value {
@@ -183,7 +218,7 @@ class MovieListStart {
         
         self.genres = [Int: String]()
         
-        Alamofire.request("\(baseUrl)\(EndPoint.genresList.rawValue)\(apiKey)\(language)").responseJSON { response in
+        manager.request("\(baseUrl)\(EndPoint.genresList.rawValue)\(apiKey)\(language)").responseJSON { response in
             debugPrint(response)
             
             if let value = response.result.value {
@@ -205,7 +240,7 @@ class MovieListStart {
     }
     
     private func loadMovieList(completition: @escaping () -> Void) {
-        Alamofire.request("\(baseUrl)\(EndPoint.upComingMovies.rawValue)\(apiKey)\(language)\(page)").responseJSON { response in
+        manager.request("\(baseUrl)\(EndPoint.upComingMovies.rawValue)\(apiKey)\(language)\(page)").responseJSON { response in
             debugPrint(response)
             
             if let value = response.result.value {
@@ -226,7 +261,7 @@ class MovieListStart {
         
         endPointUrl.append("\(appendToResponse)\(appendParms.joined(separator: ","))")
         
-        Alamofire.request(endPointUrl).responseJSON { response in
+        manager.request(endPointUrl).responseJSON { response in
             debugPrint(response)
         
             if let value = response.result.value {
@@ -239,7 +274,10 @@ class MovieListStart {
                 }
                 
                 
-                movie.runTime = json["runtime"].int
+                if let runTime = json["runtime"].int {
+                    movie.runTime = runTime
+                }
+                
                 
                 if let credits = json["credits"].dictionary {
                     let castInfo =  credits["cast"]?.arrayValue.map({$0["name"].stringValue})
