@@ -45,10 +45,13 @@ class MovieDetailViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        NSLog("scroll view \(self.detailScrollView)")
+    }
+    
     private func displayMovie() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         
         movie = MovieDBApi.sharedInstance.movies![movieIndex!]
         
