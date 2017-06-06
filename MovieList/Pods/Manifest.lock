@@ -17,6 +17,11 @@ PODS:
   - PINRemoteImage/PINCache (3.0.0-beta.8):
     - PINCache (= 3.0.1-beta.4)
     - PINRemoteImage/Core
+  - Realm (2.8.0):
+    - Realm/Headers (= 2.8.0)
+  - Realm/Headers (2.8.0)
+  - RealmSwift (2.8.0):
+    - Realm (= 2.8.0)
   - SwiftyJSON (3.1.4)
   - Texture (2.2):
     - Texture/PINRemoteImage (= 2.2)
@@ -29,6 +34,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 4.3)
   - ChameleonFramework
+  - RealmSwift
   - SwiftyJSON
   - Texture
 
@@ -38,9 +44,11 @@ SPEC CHECKSUMS:
   PINCache: a89c8f609232afac77128557bd12c861844423d7
   PINOperation: ac23db44796d4a564ecf9b5ea7163510f579b71d
   PINRemoteImage: c4f9f16932840c597f32e69dd288e10e111a1929
+  Realm: 929243ad2b618b3232e70658bedc61110e7563f1
+  RealmSwift: 5b7079b891f2833d1849294161ba3e092bbda3f6
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   Texture: 3e4664479225216198c29bdb9621664de390534d
 
-PODFILE CHECKSUM: d87ca21b07d28a32f77885d8b74186764430d205
+PODFILE CHECKSUM: 5649705c68f6085b7e0acaaa43d87dda806d7608
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1
