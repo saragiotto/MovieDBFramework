@@ -11,5 +11,4 @@ target 'MovieList' do
   pod 'SwiftyJSON'
   pod 'ChameleonFramework'
   pod 'Texture'
-  pod 'RealmSwift'
 end

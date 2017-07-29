@@ -14,6 +14,8 @@ import ChameleonFramework
 private let reuseIdentifier = "MovieListViewCell"
 
 class MovieListViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    
+    private var movieDBModel:MovieDBApi? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +24,8 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         // self.clearsSelectionOnViewWillAppear = false
 
         // Do any additional setup after loading the view.
+        
+        movieDBModel = MovieDBApi.sharedInstance
         
         let rightSearchBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "About", style: .plain, target: self, action: #selector(MovieListViewController.presentAboutScreen))
         
@@ -47,7 +51,7 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         
         if let indexPaths = self.collectionView?.indexPathsForVisibleItems {
         
-            if let movies = MovieDBApi.sharedInstance.movies {
+            if let movies = movieDBModel!.movies {
             
                 var movieIds = [Int]()
                 
@@ -55,7 +59,7 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
                     movieIds.append(movies[index.row].id)
                 }
                 
-                MovieDBApi.sharedInstance.memoryWarning(visibleMovieIds: movieIds, detailedMovieId: nil)
+                movieDBModel!.memoryWarning(visibleMovieIds: movieIds, detailedMovieId: nil)
             }
         }
     }
@@ -97,7 +101,7 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         
-        if let movies = MovieDBApi.sharedInstance.movies {
+        if let movies = movieDBModel!.movies {
             return movies.count
         } else {
             return 0
@@ -113,19 +117,9 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         cell.movieIndex = indexPath.row
 
         print("CellDisp \(indexPath.row)")
-        if (indexPath.row == MovieDBApi.sharedInstance.movies!.count - 1) {
+        if (indexPath.row == movieDBModel!.movies!.count - 1) {
             
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            
-            print("carregando proxima pagina!")
-            
-            MovieDBApi.sharedInstance.loadMovies() {
-                
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                
-                print("carregou proxima pagina! \(MovieDBApi.sharedInstance.movies!.count)")
-                self.collectionView?.reloadData()
-            }
+            self.loadNextMovies()
         }
 
         return cell
@@ -135,6 +129,20 @@ class MovieListViewController: UICollectionViewController, UICollectionViewDeleg
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
+    }
+    
+    private func loadNextMovies() {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
+        print("carregando proxima pagina!")
+        
+        movieDBModel!.loadMovies() {
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
+            print("carregou proxima pagina! \(self.movieDBModel!.movies!.count)")
+            self.collectionView?.reloadData()
+        }
     }
 
     // MARK: UICollectionViewDelegate
