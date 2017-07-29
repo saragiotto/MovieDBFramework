@@ -25,7 +25,6 @@ class Movie {
     private(set) var popularity: Double?
     private(set) var video: Bool?
     private(set) var finalRunTime: String?
-    
     private(set) var genres_ids = [Int]()
     
     internal var posterImage: UIImage?
@@ -45,6 +44,8 @@ class Movie {
             }
         }
     }
+    
+    internal var detailedMovie = false
     
     init() {
         posterImage = nil

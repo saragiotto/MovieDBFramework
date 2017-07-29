@@ -21,18 +21,18 @@ class MovieListViewCell: UICollectionViewCell {
         }
     }
     
-    var movieApp: MovieListStart?
-    
     private var cellMovie = Movie()
     
     private func updateCell() {
+        
+        let movieApi = MovieDBApi.sharedInstance
         
         moviePoster?.image = nil
         movieName?.text = nil
         movieGenre?.text = nil
         movieReleaseDate?.text = nil
         
-        cellMovie = self.movieApp!.movieList[movieIndex!]
+        cellMovie = movieApi.movies![movieIndex!]
         
         if let title = cellMovie.title {
             self.movieName.text = title
@@ -47,7 +47,7 @@ class MovieListViewCell: UICollectionViewCell {
         if cellMovie.genres_ids.isEmpty {
             self.movieGenre.text = "-"
         } else {
-            self.movieGenre.text = self.movieApp!.genres![cellMovie.genres_ids[0]]
+            self.movieGenre.text = Genre.genreName(id: cellMovie.genres_ids[0], genres: movieApi.genres!)
         }
         
         if let releaseDate = cellMovie.releaseDate {
@@ -70,37 +70,40 @@ class MovieListViewCell: UICollectionViewCell {
         
         if let posterImg = cellMovie.posterImage {
             self.moviePoster.image = posterImg
-            self.setNeedsDisplay()
         } else {
             
-            if let posterPath = cellMovie.posterPath {
+            if cellMovie.posterPath != nil {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = true
                 
-                DispatchQueue.global(qos: .userInitiated).async {
+                let movieId = cellMovie.id
+                
+                MovieDBApi.sharedInstance.posterImage(cellMovie) { image in
+
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     
-                    let movieId = self.cellMovie.id
-                    
-                    if let url = NSURL(string:"\(self.movieApp!.secure_image_base_url!)\(self.movieApp!.preferredPosterSize!)\(posterPath)") {
-                        
-                        if let imgData = NSData(contentsOf: url as URL) {
-                            
-                            if let img = UIImage(data: imgData as Data) {
-                                
-                                DispatchQueue.main.async {
-                                    
-                                    if movieId == self.cellMovie.id {
-                                        
-                                        self.movieApp!.movieList[self.movieIndex!].posterImage = img
-                                        self.moviePoster.image = img
-                                        self.setNeedsDisplay()
-                                    }
-                                }
-                            }
-                        }
+                    if movieId == self.cellMovie.id {
+                        self.animatedPosterImageShow(image)
                     }
                 }
             } else {
-                self.moviePoster.image = UIImage(named: "NoPoster.png")!
+                self.moviePoster.image = UIImage(named: "NoPosterNew.png")!
             }
         }
+    }
+    
+    private func animatedPosterImageShow(_ posterImage: UIImage) {
+        
+        let posterMovie = UIImageView(image: UIImage())
+        posterMovie.frame = self.moviePoster.frame
+        posterMovie.alpha = 1.0
+        posterMovie.backgroundColor = UIColor.black
+        self.moviePoster.addSubview(posterMovie)
+        self.moviePoster.image = posterImage
+        
+        UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveEaseOut, animations: {
+            posterMovie.alpha = 0.0
+        }, completion: { finished in
+            posterMovie.removeFromSuperview()
+        })
     }
 }

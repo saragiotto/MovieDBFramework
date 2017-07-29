@@ -3,18 +3,44 @@ PODS:
   - ChameleonFramework (2.1.0):
     - ChameleonFramework/Default (= 2.1.0)
   - ChameleonFramework/Default (2.1.0)
+  - PINCache (3.0.1-beta.4):
+    - PINCache/Arc-exception-safe (= 3.0.1-beta.4)
+    - PINCache/Core (= 3.0.1-beta.4)
+  - PINCache/Arc-exception-safe (3.0.1-beta.4):
+    - PINCache/Core
+  - PINCache/Core (3.0.1-beta.4):
+    - PINOperation (= 1.0.3)
+  - PINOperation (1.0.3)
+  - PINRemoteImage/Core (3.0.0-beta.8)
+  - PINRemoteImage/iOS (3.0.0-beta.8):
+    - PINRemoteImage/Core
+  - PINRemoteImage/PINCache (3.0.0-beta.8):
+    - PINCache (= 3.0.1-beta.4)
+    - PINRemoteImage/Core
   - SwiftyJSON (3.1.4)
+  - Texture (2.2):
+    - Texture/PINRemoteImage (= 2.2)
+  - Texture/Core (2.2)
+  - Texture/PINRemoteImage (2.2):
+    - PINRemoteImage/iOS (= 3.0.0-beta.8)
+    - PINRemoteImage/PINCache
+    - Texture/Core
 
 DEPENDENCIES:
   - Alamofire (~> 4.3)
   - ChameleonFramework
   - SwiftyJSON
+  - Texture
 
 SPEC CHECKSUMS:
   Alamofire: 856a113053a7bc9cbe5d6367a555d773fc5cfef7
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
+  PINCache: a89c8f609232afac77128557bd12c861844423d7
+  PINOperation: ac23db44796d4a564ecf9b5ea7163510f579b71d
+  PINRemoteImage: c4f9f16932840c597f32e69dd288e10e111a1929
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  Texture: 3e4664479225216198c29bdb9621664de390534d
 
-PODFILE CHECKSUM: 19adf93e503d488ed1e39517881b2e4e58cb2ed3
+PODFILE CHECKSUM: d87ca21b07d28a32f77885d8b74186764430d205
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.1
