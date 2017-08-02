@@ -1,21 +1,3 @@
-# Movie List
+# Movie DB Framework
 
-![Platform](https://img.shields.io/cocoapods/p/FontAwesomeKit.svg?style=flat)
-
-What about a movie today? This app brings the up coming movies to you.
-
-## Third-party libraries 
-
-#### Alamofire
-
-- Networking library used to all activiteis with server side endpoints.
-
-#### SwiftyJSON
-
-- Used to deal with JSON parsing with Swifty.
-
-#### ChameleonFramework
-
-- Powerful color framework for iOS. 
-
-
+Pod framework for fetch movie information from TMDb https://www.themoviedb.org
